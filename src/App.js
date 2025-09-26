@@ -1,49 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Calendar, Target, Users, Check, Moon, Sun } from 'lucide-react';
 
-const STORAGE_KEYS = {
-  startDate: 'abs_startDate',
-  participants: 'abs_participants',
-  completedDays: 'abs_completedDays',
-  isDarkMode: 'abs_isDarkMode'
-};
-
-const safeLoadJSON = (key, fallback) => {
-  try {
-    if (typeof window === 'undefined') return fallback;
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  } catch (e) {
-    // corrupted localStorage value -> return fallback
-    return fallback;
-  }
-};
-
 const AbsChallengeTracker = () => {
   const todayIso = new Date().toISOString().split('T')[0];
 
-  const [startDate, setStartDate] = useState(() => safeLoadJSON(STORAGE_KEYS.startDate, todayIso));
-  const [participants, setParticipants] = useState(() => safeLoadJSON(STORAGE_KEYS.participants, []));
+  const [startDate, setStartDate] = useState(todayIso);
+  const [participants, setParticipants] = useState([]);
   const [newParticipantName, setNewParticipantName] = useState('');
-  const [completedDays, setCompletedDays] = useState(() => safeLoadJSON(STORAGE_KEYS.completedDays, {}));
-  const [isDarkMode, setIsDarkMode] = useState(() => safeLoadJSON(STORAGE_KEYS.isDarkMode, true));
-
-  // persist
-  useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEYS.startDate, JSON.stringify(startDate)); } catch (e) {}
-  }, [startDate]);
-
-  useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEYS.participants, JSON.stringify(participants)); } catch (e) {}
-  }, [participants]);
-
-  useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEYS.completedDays, JSON.stringify(completedDays)); } catch (e) {}
-  }, [completedDays]);
-
-  useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEYS.isDarkMode, JSON.stringify(isDarkMode)); } catch (e) {}
-  }, [isDarkMode]);
+  const [completedDays, setCompletedDays] = useState({});
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Helpers
   const getCurrentDate = () => {
