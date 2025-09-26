@@ -4,11 +4,61 @@ import { Plus, Calendar, Target, Users, Check, Moon, Sun } from 'lucide-react';
 const AbsChallengeTracker = () => {
   const todayIso = new Date().toISOString().split('T')[0];
 
-  const [startDate, setStartDate] = useState(todayIso);
-  const [participants, setParticipants] = useState([]);
+  // Load from localStorage or use defaults
+  const [startDate, setStartDate] = useState(() => {
+    try {
+      return localStorage.getItem('abs_startDate') || todayIso;
+    } catch (e) {
+      return todayIso;
+    }
+  });
+  const [participants, setParticipants] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('abs_participants')) || [];
+    } catch (e) {
+      return [];
+    }
+  });
   const [newParticipantName, setNewParticipantName] = useState('');
-  const [completedDays, setCompletedDays] = useState({});
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [completedDays, setCompletedDays] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('abs_completedDays')) || {};
+    } catch (e) {
+      return {};
+    }
+  });
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('abs_isDarkMode')) ?? true;
+    } catch (e) {
+      return true;
+    }
+  });
+
+  // Save to localStorage whenever state changes
+  useEffect(() => {
+    try {
+      localStorage.setItem('abs_startDate', startDate);
+    } catch (e) {}
+  }, [startDate]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('abs_participants', JSON.stringify(participants));
+    } catch (e) {}
+  }, [participants]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('abs_completedDays', JSON.stringify(completedDays));
+    } catch (e) {}
+  }, [completedDays]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('abs_isDarkMode', JSON.stringify(isDarkMode));
+    } catch (e) {}
+  }, [isDarkMode]);
 
   // Helpers
   const getCurrentDate = () => {
@@ -92,6 +142,19 @@ const AbsChallengeTracker = () => {
     return { completed, percentage: Math.round((completed / 28) * 100) };
   };
 
+  // Reset all data
+  const resetAll = () => {
+    if (window.confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+      setStartDate(todayIso);
+      setParticipants([]);
+      setCompletedDays({});
+      setIsDarkMode(true);
+      try {
+        localStorage.clear();
+      } catch (e) {}
+    }
+  };
+
   const themeClasses = {
     bg: isDarkMode ? 'bg-black' : 'bg-white',
     text: isDarkMode ? 'text-white' : 'text-black',
@@ -109,7 +172,7 @@ const AbsChallengeTracker = () => {
     <div className={`min-h-screen ${themeClasses.bg} ${themeClasses.text} transition-colors`}>
       <div className="w-full">
         {/* Header */}
-        <div className="text-center p-4 sm:p-6">
+        <div className="text-center p-4 sm:p-6 relative">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-4">
             <Target className="w-6 h-6 sm:w-8 sm:h-8" />
             <h1 className="text-2xl sm:text-4xl font-bold text-center">Igor Voitenko 28 Day Abs Challenge</h1>
@@ -121,6 +184,15 @@ const AbsChallengeTracker = () => {
               {isDarkMode ? <Sun className="w-4 h-4 sm:w-5 sm:h-5" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
             </button>
           </div>
+          
+          {/* Reset Button - Top Right */}
+          <button
+            type="button"
+            onClick={resetAll}
+            className={`absolute top-4 right-4 px-3 py-2 rounded-lg ${themeClasses.button} hover:bg-red-600 hover:text-white transition-colors text-sm`}
+          >
+            Reset All
+          </button>
 
           {/* Challenge Link */}
           <div className="mb-4 sm:mb-6">
@@ -188,13 +260,13 @@ const AbsChallengeTracker = () => {
                 <table className="w-full" style={{ minWidth: participants.length > 2 ? '800px' : '600px' }}>
                   <thead className={`${themeClasses.headerBg} sticky top-0 z-20 shadow-sm`}>
                     <tr>
-                      <th className={`px-2 sm:px-4 py-3 sm:py-4 text-left font-semibold ${themeClasses.text} text-xs sm:text-sm sticky left-0 z-30 ${themeClasses.headerBg} border-r ${themeClasses.border}`} style={{ minWidth: '40px', width: '40px' }}>
+                      <th className={`px-2 sm:px-4 py-3 sm:py-4 text-center font-semibold ${themeClasses.text} text-xs sm:text-sm sticky left-0 z-30 ${themeClasses.headerBg} border-r ${themeClasses.border}`} style={{ minWidth: '50px', width: '50px' }}>
                         Day
                       </th>
-                      <th className={`px-2 sm:px-3 py-3 sm:py-4 text-left font-semibold ${themeClasses.text} text-xs sm:text-sm border-r ${themeClasses.border}`} style={{ minWidth: '60px', width: '60px' }}>
+                      <th className={`px-2 sm:px-3 py-3 sm:py-4 text-center font-semibold ${themeClasses.text} text-xs sm:text-sm border-r ${themeClasses.border}`} style={{ minWidth: '80px', width: '80px' }}>
                         Date
                       </th>
-                      <th className={`px-2 sm:px-3 py-3 sm:py-4 text-left font-semibold ${themeClasses.text} text-xs sm:text-sm border-r ${themeClasses.border}`} style={{ minWidth: '70px', width: '70px' }}>
+                      <th className={`px-2 sm:px-3 py-3 sm:py-4 text-center font-semibold ${themeClasses.text} text-xs sm:text-sm border-r ${themeClasses.border}`} style={{ minWidth: '90px', width: '90px' }}>
                         Exercise
                       </th>
                       {participants.map(participant => {
@@ -245,19 +317,19 @@ const AbsChallengeTracker = () => {
                             isWeekStart ? `border-t-2 ${themeClasses.border}` : `border-b ${themeClasses.border}`
                           }`}
                         >
-                          <td className={`px-2 sm:px-4 py-2 sm:py-3 font-semibold ${themeClasses.text} text-xs sm:text-sm sticky left-0 z-10 ${
+                          <td className={`px-2 sm:px-4 py-2 sm:py-3 font-semibold ${themeClasses.text} text-xs sm:text-sm sticky left-0 z-10 text-center ${
                             isCurrentDay
                               ? isDarkMode
                                 ? 'bg-gray-700'
                                 : 'bg-gray-200'
                               : themeClasses.tableBg
-                          } border-r ${themeClasses.border}`} style={{ width: '40px' }}>
+                          } border-r ${themeClasses.border}`} style={{ width: '50px' }}>
                             {day}
                           </td>
-                          <td className={`px-2 sm:px-3 py-2 sm:py-3 ${themeClasses.textMuted} text-xs sm:text-sm border-r ${themeClasses.border}`} style={{ width: '60px' }}>
+                          <td className={`px-2 sm:px-3 py-2 sm:py-3 ${themeClasses.textMuted} text-xs sm:text-sm border-r ${themeClasses.border} text-center`} style={{ width: '80px' }}>
                             {getDateForDay(day)}
                           </td>
-                          <td className={`px-2 sm:px-3 py-2 sm:py-3 border-r ${themeClasses.border}`} style={{ width: '70px' }}>
+                          <td className={`px-2 sm:px-3 py-2 sm:py-3 border-r ${themeClasses.border} text-center`} style={{ width: '90px' }}>
                             <a
                               href={exerciseLinks[exerciseType]}
                               target="_blank"
