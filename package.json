@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "build": "react-scripts build"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "lucide-react": "^0.263.1"
+  }
+}
