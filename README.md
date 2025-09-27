@@ -4,6 +4,8 @@ A small web app that tracks progress in **Igor Voitenko’s 28-Day Abs Challenge
 You can set a start date, add participants, and mark off daily workouts.  
 Built with **React** + **Tailwind CSS**, hosted on **Netlify**.
 
+<img width="2490" height="1194" alt="image" src="https://github.com/user-attachments/assets/f180ca3f-755b-4e85-a7e9-cc9a7fba3203" />
+
 ---
 
 ## 📂 Project Structure
