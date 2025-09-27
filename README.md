@@ -75,4 +75,4 @@ When you run **`npm run build`** (or when Netlify does it automatically):
 
 ## 🌐 Live Hosting
 
-👉 [View Live on Netlify](https://app.netlify.com/projects/rickexercisetracker/deploys/68d64949ae79240008088de6)
+👉 [View Live on Netlify](https://rickexercisetracker.netlify.app/)
