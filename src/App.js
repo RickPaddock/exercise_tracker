@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Plus, Calendar, Target, Users, Check, Moon, Sun } from 'lucide-react';
+
+const APP_VERSION = 'v1.0.1';
 
 const AbsChallengeTracker = () => {
   const todayIso = new Date().toISOString().split('T')[0];
@@ -34,6 +36,8 @@ const AbsChallengeTracker = () => {
       return true;
     }
   });
+  const [tableMaxHeight, setTableMaxHeight] = useState(null);
+  const scrollContainerRef = useRef(null);
 
   // Save to localStorage whenever state changes
   useEffect(() => {
@@ -59,6 +63,40 @@ const AbsChallengeTracker = () => {
       localStorage.setItem('abs_isDarkMode', JSON.stringify(isDarkMode));
     } catch (e) {}
   }, [isDarkMode]);
+
+  // Recalculate scroll area to keep the final challenge days reachable on any screen size.
+  useEffect(() => {
+    if (typeof window === 'undefined' || participants.length === 0) {
+      return;
+    }
+
+    let resizeFrame;
+
+    const updateMaxHeight = () => {
+      if (!scrollContainerRef.current) return;
+      const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+      const { top } = scrollContainerRef.current.getBoundingClientRect();
+      const paddingAllowance = 16;
+      const available = Math.max(viewportHeight - top - paddingAllowance, 320);
+      setTableMaxHeight(available);
+    };
+
+    const scheduleUpdate = () => {
+      if (typeof window === 'undefined') return;
+      if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
+      resizeFrame = window.requestAnimationFrame(updateMaxHeight);
+    };
+
+    updateMaxHeight();
+    window.addEventListener('resize', scheduleUpdate);
+    window.addEventListener('orientationchange', scheduleUpdate);
+
+    return () => {
+      window.removeEventListener('resize', scheduleUpdate);
+      window.removeEventListener('orientationchange', scheduleUpdate);
+      if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
+    };
+  }, [participants.length, startDate]);
 
   // Helpers
   const getCurrentDate = () => {
@@ -251,8 +289,9 @@ const AbsChallengeTracker = () => {
             <div className={`${themeClasses.tableBg} rounded-lg sm:rounded-2xl shadow-2xl border ${themeClasses.border} relative`}>
               <div
                 className="overflow-auto"
+                ref={scrollContainerRef}
                 style={{
-                  maxHeight: '70vh',
+                  maxHeight: tableMaxHeight ? `${tableMaxHeight}px` : '70vh',
                   scrollbarWidth: 'thin',
                   scrollbarColor: isDarkMode ? '#4B5563 #1F2937' : '#D1D5DB #F9FAFB'
                 }}
@@ -379,6 +418,9 @@ const AbsChallengeTracker = () => {
             <p className="text-lg sm:text-xl">Add participants to start tracking!</p>
           </div>
         )}
+        <footer className={`border-t ${themeClasses.border} py-3 sm:py-4 text-center ${themeClasses.textMuted} text-xs sm:text-sm`}>
+          Version {APP_VERSION}
+        </footer>
       </div>
     </div>
   );
