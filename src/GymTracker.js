@@ -1,104 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight, GripVertical, ArrowUp, ArrowDown, Pencil, Download, Upload } from 'lucide-react';
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+  useSortable,
+  arrayMove,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import {
+  ACTIVITY_META,
+  WEEK_DAY_NAMES,
+  WEEK_ORDER,
+  DAY_NAMES,
+  DAY_MS,
+  getMonday,
+  addDays,
+  toKey,
+  loadPlan,
+  savePlan,
+  defaultPlan,
+} from './gymPlan';
 
-// The three strength sessions, with their exercises and how many sets to log.
-export const WORKOUTS = {
-  monday: {
-    title: 'Monday — Full Body (upper-biased)',
-    exercises: [
-      { name: 'Incline chest press', target: '2 × 6–8', sets: 2, cue: 'elbows ~45°, control down, press up' },
-      { name: 'Cable fly', target: '2 × 10–12', sets: 2, cue: 'slight bend in elbow, squeeze chest' },
-      { name: 'Chest-supported row', target: '1×6–8, 1×8–10', sets: 2, cue: 'pull to ribs, shoulder blades back' },
-      { name: 'Lat pulldown', target: '1×6–8, 1×8–10', sets: 2, cue: 'chest up, drive elbows down' },
-      { name: 'Leg extension', target: '1×8–10, 1×10–12', sets: 2 },
-      { name: 'Leg press', target: '2 × 6–8', sets: 2, cue: "feet shoulder-width, don't lock knees hard" },
-      { name: 'Bicep curl + tricep pushdown (superset)', target: '3 × 10–12', sets: 3 },
-    ],
-  },
-  wednesday: {
-    title: 'Wednesday — Full Body (heaviest legs)',
-    exercises: [
-      { name: 'Shoulder press', target: '2 × 6–8', sets: 2, cue: "don't flare, press slightly forward of head" },
-      { name: 'Chest-supported lateral raise', target: '2 × 10–12', sets: 2, cue: 'lead with elbows, pinky high' },
-      { name: 'Seated row', target: '1×6–8, 1×8–10', sets: 2 },
-      { name: 'DB row', target: '1×6–8, 1×8–10', sets: 2, cue: 'flat back, pull to hip' },
-      { name: 'Hamstring curl', target: '1×8–10, 1×10–12', sets: 2 },
-      { name: '⚑ Romanian deadlift', target: '2 × 6–8', sets: 2, cue: 'hinge at hips, soft knees, bar close, flat back — GET FORM CHECKED' },
-      { name: 'DB curl + skullcrushers (superset)', target: '3 × 10–12', sets: 3 },
-    ],
-  },
-  friday: {
-    title: 'Friday — Full Body',
-    exercises: [
-      { name: 'Pec dec fly', target: '1×8–10, 1×10–12', sets: 2 },
-      { name: 'Seated lateral raise', target: '2 × 10–12', sets: 2 },
-      { name: 'Close-grip pulldown', target: '1×6–8, 1×8–10', sets: 2 },
-      { name: 'Low row', target: '1×6–8, 1×8–10', sets: 2 },
-      { name: '⚑ Squat variation', target: '6–8, 8–10, 10–12', sets: 3, cue: 'chest up, knees track over toes, sit back, full depth — GET FORM CHECKED' },
-      { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3 },
-      { name: 'Hammer curls + tricep dips (superset)', target: 'to failure', sets: 3 },
-    ],
-  },
-};
+// Re-export so the rest of the app can keep importing helpers from here if needed.
+export { getMonday, addDays, toKey, DAY_NAMES, WEEK_ORDER, DAY_MS } from './gymPlan';
 
-// Weekly schedule keyed by JS weekday (0 = Sunday … 6 = Saturday).
-export const SCHEDULE = {
-  1: { type: 'strength', workout: 'monday', label: 'Strength — Full body', pill: 'upper-biased' },
-  2: { type: 'rest', label: 'Light jog or rest' },
-  3: { type: 'strength', workout: 'wednesday', label: 'Strength — Full body', pill: 'heaviest legs' },
-  4: { type: 'futsal', label: 'Futsal 9pm' },
-  5: { type: 'strength', workout: 'friday', label: 'Strength — Full body' },
-  6: { type: 'recovery', label: 'Active recovery / walk', pill: 'protect this' },
-  0: { type: 'futsal', label: 'Futsal 9pm' },
-};
-
-// Mon → Sun ordering for display.
-export const WEEK_ORDER = [1, 2, 3, 4, 5, 6, 0];
-export const DAY_NAMES = { 0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat' };
-export const DAY_MS = 24 * 60 * 60 * 1000;
-
-export const getMonday = (input) => {
-  const date = new Date(input);
-  date.setHours(0, 0, 0, 0);
-  const day = date.getDay();
-  const diff = day === 0 ? -6 : 1 - day; // shift back to Monday
-  date.setDate(date.getDate() + diff);
-  return date;
-};
-
-export const addDays = (date, n) => {
-  const out = new Date(date);
-  out.setDate(out.getDate() + n);
-  return out;
-};
-
-export const toKey = (d) =>
-  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+// Render-prop sortable row: lets us put the drag handle exactly where we want.
+function Sortable({ id, children }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+    touchAction: 'none',
+  };
+  return children({ setNodeRef, style, handleProps: { ...attributes, ...listeners } });
+}
 
 const GymLog = () => {
   const todayIso = new Date().toISOString().split('T')[0];
 
   const [startDate, setStartDate] = useState(() => {
-    try {
-      return localStorage.getItem('gym_startDate') || todayIso;
-    } catch (e) {
-      return todayIso;
-    }
+    try { return localStorage.getItem('gym_startDate') || todayIso; } catch (e) { return todayIso; }
   });
   const [log, setLog] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('gym_log')) || {};
-    } catch (e) {
-      return {};
-    }
+    try { return JSON.parse(localStorage.getItem('gym_log')) || {}; } catch (e) { return {}; }
   });
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('gym_isDarkMode')) ?? true;
-    } catch (e) {
-      return true;
-    }
+    try { return JSON.parse(localStorage.getItem('gym_isDarkMode')) ?? true; } catch (e) { return true; }
   });
+  const [plan, setPlan] = useState(() => loadPlan());
+  const [editMode, setEditMode] = useState(false);
 
   const computeOffset = (start) => {
     const w = Math.round((getMonday(new Date()).getTime() - getMonday(new Date(start)).getTime()) / (7 * DAY_MS));
@@ -106,16 +66,18 @@ const GymLog = () => {
   };
   const [weekOffset, setWeekOffset] = useState(() => computeOffset(startDate));
   const [expanded, setExpanded] = useState({});
+  const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    try { localStorage.setItem('gym_startDate', startDate); } catch (e) {}
-  }, [startDate]);
-  useEffect(() => {
-    try { localStorage.setItem('gym_log', JSON.stringify(log)); } catch (e) {}
-  }, [log]);
-  useEffect(() => {
-    try { localStorage.setItem('gym_isDarkMode', JSON.stringify(isDarkMode)); } catch (e) {}
-  }, [isDarkMode]);
+  useEffect(() => { try { localStorage.setItem('gym_startDate', startDate); } catch (e) {} }, [startDate]);
+  useEffect(() => { try { localStorage.setItem('gym_log', JSON.stringify(log)); } catch (e) {} }, [log]);
+  useEffect(() => { try { localStorage.setItem('gym_isDarkMode', JSON.stringify(isDarkMode)); } catch (e) {} }, [isDarkMode]);
+
+  const persistPlan = (next) => { setPlan(next); savePlan(next); };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 6 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
 
   const startMonday = getMonday(startDate);
   const weekStart = addDays(startMonday, weekOffset * 7);
@@ -134,27 +96,93 @@ const GymLog = () => {
       return { ...prev, [dateKey]: day };
     });
   };
-
   const getEntry = (dateKey, exName, setIdx, field) => {
     const sets = log[dateKey] && log[dateKey][exName];
     if (!Array.isArray(sets) || !sets[setIdx]) return '';
     return sets[setIdx][field] ?? '';
   };
-
   const toggleDone = (dateKey) => {
     setLog((prev) => ({ ...prev, [dateKey]: { ...(prev[dateKey] || {}), _done: !(prev[dateKey] && prev[dateKey]._done) } }));
   };
 
+  // ---- plan editing ----
+  const moveWeek = (oldIndex, newIndex) => {
+    if (newIndex < 0 || newIndex > 6) return;
+    persistPlan({ ...plan, week: arrayMove(plan.week, oldIndex, newIndex) });
+  };
+  const onWeekDragEnd = ({ active, over }) => {
+    if (!over || active.id === over.id) return;
+    const oldIndex = plan.week.findIndex((s) => s.id === active.id);
+    const newIndex = plan.week.findIndex((s) => s.id === over.id);
+    if (oldIndex !== -1 && newIndex !== -1) moveWeek(oldIndex, newIndex);
+  };
+  const moveExercise = (workoutKey, oldIndex, newIndex) => {
+    if (newIndex < 0) return;
+    const list = plan.workouts[workoutKey].exercises;
+    if (newIndex > list.length - 1) return;
+    const workouts = { ...plan.workouts, [workoutKey]: { ...plan.workouts[workoutKey], exercises: arrayMove(list, oldIndex, newIndex) } };
+    persistPlan({ ...plan, workouts });
+  };
+  const onExerciseDragEnd = (workoutKey) => ({ active, over }) => {
+    if (!over || active.id === over.id) return;
+    const list = plan.workouts[workoutKey].exercises;
+    const oldIndex = list.findIndex((e) => e.name === active.id);
+    const newIndex = list.findIndex((e) => e.name === over.id);
+    if (oldIndex !== -1 && newIndex !== -1) moveExercise(workoutKey, oldIndex, newIndex);
+  };
+  const resetPlan = () => {
+    if (window.confirm('Reset the weekly plan and exercise order back to the original? Your logged sets are kept.')) {
+      persistPlan(defaultPlan());
+    }
+  };
+
+  // ---- export / import ----
+  const exportData = () => {
+    const payload = { version: 2, exportedAt: new Date().toISOString(), startDate, plan, log };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `gym-log-${todayIso}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+  const importData = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (data.log && typeof data.log === 'object') { setLog(data.log); }
+        if (data.startDate) { setStartDate(data.startDate); }
+        if (data.plan && Array.isArray(data.plan.week) && data.plan.workouts) {
+          persistPlan(data.plan);
+        }
+        setWeekOffset(computeOffset(data.startDate || startDate));
+        window.alert('Workout log imported.');
+      } catch (err) {
+        window.alert('Could not read that file — make sure it is a gym-log export.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
+
   const resetAll = () => {
-    if (window.confirm('Reset the gym log? This clears every logged set and cannot be undone.')) {
+    if (window.confirm('Reset everything (plan + all logged sets)? This cannot be undone.')) {
       setStartDate(todayIso);
       setLog({});
       setIsDarkMode(true);
       setWeekOffset(0);
+      persistPlan(defaultPlan());
       try {
         localStorage.removeItem('gym_startDate');
         localStorage.removeItem('gym_log');
         localStorage.removeItem('gym_isDarkMode');
+        localStorage.removeItem('gym_plan');
       } catch (e) {}
     }
   };
@@ -172,6 +200,21 @@ const GymLog = () => {
   const todayKey = toKey(new Date());
   const weekLabel = `${days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${days[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
 
+  const pillEl = (txt) =>
+    txt ? <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-900 text-green-200">{txt}</span> : null;
+
+  // Small up/down tap controls.
+  const MoveBtns = ({ onUp, onDown, upDisabled, downDisabled }) => (
+    <div className="flex flex-col">
+      <button type="button" onClick={onUp} disabled={upDisabled} className={`p-0.5 rounded ${theme.button} disabled:opacity-30`} title="Move up">
+        <ArrowUp className="w-3.5 h-3.5" />
+      </button>
+      <button type="button" onClick={onDown} disabled={downDisabled} className={`p-0.5 rounded ${theme.button} disabled:opacity-30 mt-0.5`} title="Move down">
+        <ArrowDown className="w-3.5 h-3.5" />
+      </button>
+    </div>
+  );
+
   return (
     <div className={`min-h-screen ${theme.bg} ${theme.text} transition-colors`}>
       <div className="max-w-3xl mx-auto px-3 sm:px-4">
@@ -180,20 +223,12 @@ const GymLog = () => {
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4">
             <Dumbbell className="w-6 h-6 sm:w-8 sm:h-8" />
             <h1 className="text-2xl sm:text-3xl font-bold">Gym Workout Log</h1>
-            <button
-              type="button"
-              onClick={() => setIsDarkMode((p) => !p)}
-              className={`p-2 rounded-lg ${theme.button} transition-colors`}
-            >
+            <button type="button" onClick={() => setIsDarkMode((p) => !p)} className={`p-2 rounded-lg ${theme.button} transition-colors`}>
               {isDarkMode ? <Sun className="w-4 h-4 sm:w-5 sm:h-5" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
             </button>
           </div>
 
-          <button
-            type="button"
-            onClick={resetAll}
-            className={`absolute top-4 right-4 px-3 py-2 rounded-lg ${theme.button} hover:bg-red-600 hover:text-white transition-colors text-sm`}
-          >
+          <button type="button" onClick={resetAll} className={`absolute top-4 right-4 px-3 py-2 rounded-lg ${theme.button} hover:bg-red-600 hover:text-white transition-colors text-sm`}>
             Reset All
           </button>
 
@@ -203,144 +238,210 @@ const GymLog = () => {
             <input
               type="date"
               value={startDate}
-              onChange={(e) => {
-                setStartDate(e.target.value);
-                setWeekOffset(0);
-              }}
+              onChange={(e) => { setStartDate(e.target.value); setWeekOffset(0); }}
               className={`px-3 py-2 rounded-lg ${theme.input} border focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm sm:text-base`}
             />
           </div>
-          <div className={`mb-2 ${theme.textMuted} text-xs sm:text-sm`}>Today: {getCurrentDate()}</div>
-        </div>
+          <div className={`mb-3 ${theme.textMuted} text-xs sm:text-sm`}>Today: {getCurrentDate()}</div>
 
-        {/* Week navigation */}
-        <div className="flex items-center justify-between gap-2 mb-4">
-          <button
-            type="button"
-            onClick={() => setWeekOffset((w) => Math.max(0, w - 1))}
-            disabled={weekOffset === 0}
-            className={`px-3 py-2 rounded-lg ${theme.button} transition-colors text-sm disabled:opacity-40`}
-          >
-            ← Prev
-          </button>
-          <div className="text-center">
-            <div className="font-semibold text-sm sm:text-base">Week {weekOffset + 1}</div>
-            <div className={`text-xs ${theme.textMuted}`}>{weekLabel}</div>
+          {/* Toolbar */}
+          <div className="flex flex-wrap items-center justify-center gap-2">
             <button
               type="button"
-              onClick={() => setWeekOffset(computeOffset(startDate))}
-              className="text-green-500 hover:text-green-400 text-xs underline mt-0.5"
+              onClick={() => setEditMode((p) => !p)}
+              className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm transition-colors ${editMode ? 'bg-green-600 hover:bg-green-700 text-white' : theme.button}`}
             >
-              Jump to this week
+              <Pencil className="w-4 h-4" /> {editMode ? 'Done editing' : 'Edit plan'}
             </button>
+            <button type="button" onClick={exportData} className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm ${theme.button} transition-colors`}>
+              <Download className="w-4 h-4" /> Export
+            </button>
+            <button type="button" onClick={() => fileInputRef.current && fileInputRef.current.click()} className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm ${theme.button} transition-colors`}>
+              <Upload className="w-4 h-4" /> Import
+            </button>
+            <input ref={fileInputRef} type="file" accept="application/json,.json" onChange={importData} className="hidden" />
           </div>
-          <button
-            type="button"
-            onClick={() => setWeekOffset((w) => w + 1)}
-            className={`px-3 py-2 rounded-lg ${theme.button} transition-colors text-sm`}
-          >
-            Next →
-          </button>
         </div>
 
-        {/* Day cards */}
-        <div className="space-y-3 pb-8">
-          {days.map((date) => {
-            const wd = date.getDay();
-            const sched = SCHEDULE[wd];
-            const dateKey = toKey(date);
-            const isToday = dateKey === todayKey;
-            const isStrength = sched.type === 'strength';
-            const isOpen = !!expanded[dateKey];
-            const done = !!(log[dateKey] && log[dateKey]._done);
-
-            return (
-              <div
-                key={dateKey}
-                className={`rounded-xl border ${theme.border} ${theme.cardBg} ${isToday ? 'ring-2 ring-green-500' : ''} overflow-hidden`}
-              >
-                <div className="flex items-center gap-3 p-3 sm:p-4">
-                  <div className="text-center min-w-[44px]">
-                    <div className="font-bold text-sm">{DAY_NAMES[wd]}</div>
-                    <div className={`text-xs ${theme.textMuted}`}>
-                      {date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    disabled={!isStrength}
-                    onClick={() => isStrength && setExpanded((p) => ({ ...p, [dateKey]: !p[dateKey] }))}
-                    className={`flex-1 text-left flex items-center gap-2 ${isStrength ? 'cursor-pointer' : 'cursor-default'}`}
-                  >
-                    {isStrength && (isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />)}
-                    <span className="text-sm sm:text-base font-medium">{sched.label}</span>
-                    {sched.pill && (
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-900 text-green-200">
-                        {sched.pill}
-                      </span>
-                    )}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => toggleDone(dateKey)}
-                    title="Mark done"
-                    className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center transition-all ${
-                      done
-                        ? 'bg-green-500 border-green-500 text-white hover:bg-green-600'
-                        : isDarkMode
-                          ? 'border-gray-600 hover:border-green-400'
-                          : 'border-gray-300 hover:border-green-400'
-                    }`}
-                  >
-                    {done && <Check className="w-4 h-4 sm:w-5 sm:h-5" />}
-                  </button>
-                </div>
-
-                {/* Strength workout log */}
-                {isStrength && isOpen && (
-                  <div className={`border-t ${theme.border} p-3 sm:p-4 space-y-4`}>
-                    {WORKOUTS[sched.workout].exercises.map((ex) => (
-                      <div key={ex.name}>
-                        <div className="flex items-baseline justify-between gap-2">
-                          <span className="font-semibold text-sm">{ex.name}</span>
-                          <span className="text-xs text-green-500 font-semibold whitespace-nowrap">{ex.target}</span>
-                        </div>
-                        {ex.cue && <div className={`text-xs italic ${theme.textMuted} mb-1`}>{ex.cue}</div>}
-                        <div className="space-y-1.5 mt-1.5">
-                          {Array.from({ length: ex.sets }, (_, i) => i).map((setIdx) => (
-                            <div key={setIdx} className="flex items-center gap-2">
-                              <span className={`text-xs ${theme.textMuted} w-12`}>Set {setIdx + 1}</span>
-                              <input
-                                type="number"
-                                inputMode="decimal"
-                                placeholder="kg"
-                                value={getEntry(dateKey, ex.name, setIdx, 'weight')}
-                                onChange={(e) => setEntry(dateKey, ex.name, setIdx, 'weight', e.target.value)}
-                                className={`w-20 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
-                              />
-                              <span className={`text-xs ${theme.textMuted}`}>kg ×</span>
-                              <input
-                                type="number"
-                                inputMode="numeric"
-                                placeholder="reps"
-                                value={getEntry(dateKey, ex.name, setIdx, 'reps')}
-                                onChange={(e) => setEntry(dateKey, ex.name, setIdx, 'reps', e.target.value)}
-                                className={`w-20 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
-                              />
-                              <span className={`text-xs ${theme.textMuted}`}>reps</span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+        {editMode ? (
+          /* ============ PLAN EDITOR ============ */
+          <div className="pb-10">
+            <div className={`rounded-xl border ${theme.border} ${theme.cardBg} p-3 sm:p-4 mb-4`}>
+              <div className="flex items-center justify-between mb-1">
+                <h2 className="font-bold text-base sm:text-lg">Edit weekly plan</h2>
+                <button type="button" onClick={resetPlan} className={`text-xs px-2 py-1 rounded ${theme.button}`}>Reset to default</button>
               </div>
-            );
-          })}
-        </div>
+              <p className={`text-xs ${theme.textMuted} mb-3`}>Drag the <GripVertical className="inline w-3.5 h-3.5" /> handle or use ↑ ↓ to move days. Expand a strength day to reorder its exercises. Changes apply to every week.</p>
+
+              <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onWeekDragEnd}>
+                <SortableContext items={plan.week.map((s) => s.id)} strategy={verticalListSortingStrategy}>
+                  <div className="space-y-2">
+                    {plan.week.map((slot, idx) => {
+                      const meta = ACTIVITY_META[slot.activityId];
+                      const isStrength = meta.type === 'strength';
+                      const isOpen = !!expanded[`edit-${slot.id}`];
+                      return (
+                        <Sortable key={slot.id} id={slot.id}>
+                          {({ setNodeRef, style, handleProps }) => (
+                            <div ref={setNodeRef} style={style} className={`rounded-lg border ${theme.border} ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
+                              <div className="flex items-center gap-2 p-2.5">
+                                <button type="button" {...handleProps} className="cursor-grab active:cursor-grabbing touch-none p-1" title="Drag to move">
+                                  <GripVertical className="w-4 h-4" />
+                                </button>
+                                <span className="font-bold text-sm w-9">{WEEK_DAY_NAMES[idx]}</span>
+                                <button
+                                  type="button"
+                                  disabled={!isStrength}
+                                  onClick={() => isStrength && setExpanded((p) => ({ ...p, [`edit-${slot.id}`]: !p[`edit-${slot.id}`] }))}
+                                  className={`flex-1 text-left flex items-center gap-2 ${isStrength ? 'cursor-pointer' : 'cursor-default'}`}
+                                >
+                                  {isStrength && (isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />)}
+                                  <span className="text-sm font-medium">{meta.label}</span>
+                                  {pillEl(meta.pill)}
+                                </button>
+                                <MoveBtns
+                                  onUp={() => moveWeek(idx, idx - 1)}
+                                  onDown={() => moveWeek(idx, idx + 1)}
+                                  upDisabled={idx === 0}
+                                  downDisabled={idx === 6}
+                                />
+                              </div>
+
+                              {isStrength && isOpen && (
+                                <div className={`border-t ${theme.border} p-2.5`}>
+                                  <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onExerciseDragEnd(slot.activityId)}>
+                                    <SortableContext items={plan.workouts[slot.activityId].exercises.map((e) => e.name)} strategy={verticalListSortingStrategy}>
+                                      <div className="space-y-1.5">
+                                        {plan.workouts[slot.activityId].exercises.map((ex, exIdx) => (
+                                          <Sortable key={ex.name} id={ex.name}>
+                                            {({ setNodeRef, style, handleProps }) => (
+                                              <div ref={setNodeRef} style={style} className={`flex items-center gap-2 rounded-md border ${theme.border} ${theme.cardBg} px-2 py-1.5`}>
+                                                <button type="button" {...handleProps} className="cursor-grab active:cursor-grabbing touch-none p-0.5" title="Drag to reorder">
+                                                  <GripVertical className="w-4 h-4" />
+                                                </button>
+                                                <div className="flex-1 min-w-0">
+                                                  <div className="text-sm font-medium truncate">{ex.name}</div>
+                                                  <div className="text-xs text-green-500 font-semibold">{ex.target}</div>
+                                                </div>
+                                                <MoveBtns
+                                                  onUp={() => moveExercise(slot.activityId, exIdx, exIdx - 1)}
+                                                  onDown={() => moveExercise(slot.activityId, exIdx, exIdx + 1)}
+                                                  upDisabled={exIdx === 0}
+                                                  downDisabled={exIdx === plan.workouts[slot.activityId].exercises.length - 1}
+                                                />
+                                              </div>
+                                            )}
+                                          </Sortable>
+                                        ))}
+                                      </div>
+                                    </SortableContext>
+                                  </DndContext>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </Sortable>
+                      );
+                    })}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            </div>
+          </div>
+        ) : (
+          /* ============ LOGGING VIEW ============ */
+          <>
+            <div className="flex items-center justify-between gap-2 mb-4">
+              <button type="button" onClick={() => setWeekOffset((w) => Math.max(0, w - 1))} disabled={weekOffset === 0} className={`px-3 py-2 rounded-lg ${theme.button} transition-colors text-sm disabled:opacity-40`}>← Prev</button>
+              <div className="text-center">
+                <div className="font-semibold text-sm sm:text-base">Week {weekOffset + 1}</div>
+                <div className={`text-xs ${theme.textMuted}`}>{weekLabel}</div>
+                <button type="button" onClick={() => setWeekOffset(computeOffset(startDate))} className="text-green-500 hover:text-green-400 text-xs underline mt-0.5">Jump to this week</button>
+              </div>
+              <button type="button" onClick={() => setWeekOffset((w) => w + 1)} className={`px-3 py-2 rounded-lg ${theme.button} transition-colors text-sm`}>Next →</button>
+            </div>
+
+            <div className="space-y-3 pb-8">
+              {days.map((date, i) => {
+                const wd = date.getDay();
+                const slot = plan.week[i];
+                const meta = ACTIVITY_META[slot.activityId];
+                const dateKey = toKey(date);
+                const isToday = dateKey === todayKey;
+                const isStrength = meta.type === 'strength';
+                const isOpen = !!expanded[dateKey];
+                const done = !!(log[dateKey] && log[dateKey]._done);
+                const exercises = isStrength ? plan.workouts[slot.activityId].exercises : [];
+
+                return (
+                  <div key={dateKey} className={`rounded-xl border ${theme.border} ${theme.cardBg} ${isToday ? 'ring-2 ring-green-500' : ''} overflow-hidden`}>
+                    <div className="flex items-center gap-3 p-3 sm:p-4">
+                      <div className="text-center min-w-[44px]">
+                        <div className="font-bold text-sm">{DAY_NAMES[wd]}</div>
+                        <div className={`text-xs ${theme.textMuted}`}>{date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                      </div>
+                      <button
+                        type="button"
+                        disabled={!isStrength}
+                        onClick={() => isStrength && setExpanded((p) => ({ ...p, [dateKey]: !p[dateKey] }))}
+                        className={`flex-1 text-left flex items-center gap-2 ${isStrength ? 'cursor-pointer' : 'cursor-default'}`}
+                      >
+                        {isStrength && (isOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />)}
+                        <span className="text-sm sm:text-base font-medium">{meta.label}</span>
+                        {pillEl(meta.pill)}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => toggleDone(dateKey)}
+                        title="Mark done"
+                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center transition-all ${
+                          done ? 'bg-green-500 border-green-500 text-white hover:bg-green-600' : isDarkMode ? 'border-gray-600 hover:border-green-400' : 'border-gray-300 hover:border-green-400'
+                        }`}
+                      >
+                        {done && <Check className="w-4 h-4 sm:w-5 sm:h-5" />}
+                      </button>
+                    </div>
+
+                    {isStrength && isOpen && (
+                      <div className={`border-t ${theme.border} p-3 sm:p-4 space-y-4`}>
+                        {exercises.map((ex) => (
+                          <div key={ex.name}>
+                            <div className="flex items-baseline justify-between gap-2">
+                              <span className="font-semibold text-sm">{ex.name}</span>
+                              <span className="text-xs text-green-500 font-semibold whitespace-nowrap">{ex.target}</span>
+                            </div>
+                            {ex.cue && <div className={`text-xs italic ${theme.textMuted} mb-1`}>{ex.cue}</div>}
+                            <div className="space-y-1.5 mt-1.5">
+                              {Array.from({ length: ex.sets }, (_, i2) => i2).map((setIdx) => (
+                                <div key={setIdx} className="flex items-center gap-2">
+                                  <span className={`text-xs ${theme.textMuted} w-12`}>Set {setIdx + 1}</span>
+                                  <input
+                                    type="number" inputMode="decimal" placeholder="kg"
+                                    value={getEntry(dateKey, ex.name, setIdx, 'weight')}
+                                    onChange={(e) => setEntry(dateKey, ex.name, setIdx, 'weight', e.target.value)}
+                                    className={`w-20 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                                  />
+                                  <span className={`text-xs ${theme.textMuted}`}>kg ×</span>
+                                  <input
+                                    type="number" inputMode="numeric" placeholder="reps"
+                                    value={getEntry(dateKey, ex.name, setIdx, 'reps')}
+                                    onChange={(e) => setEntry(dateKey, ex.name, setIdx, 'reps', e.target.value)}
+                                    className={`w-20 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                                  />
+                                  <span className={`text-xs ${theme.textMuted}`}>reps</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
