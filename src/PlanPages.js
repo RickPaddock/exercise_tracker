@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import GymLog from './GymTracker';
 
 // Styles adapted from Rick's Nutrition & Training plan, scoped under `.rick-plan`
 // so they never clash with the Igor tracker (which uses Tailwind utilities).
@@ -258,8 +259,8 @@ export const NutritionPage = () => (
   </div>
 );
 
-// ============ WORKOUT / GYM PAGE ============
-export const GymPage = () => (
+// ============ WORKOUT / GYM OVERVIEW ============
+const GymOverview = () => (
   <div className="rick-plan">
     <PlanStyles />
     <h1>Training — 3 Strength + 2 Futsal</h1>
@@ -358,3 +359,52 @@ export const GymPage = () => (
     </div>
   </div>
 );
+
+// ============ GYM PAGE (Workout Log + Overview subtabs) ============
+const GYM_SUBTABS = [
+  { id: 'log', label: '🏋️ Workout Log' },
+  { id: 'overview', label: '📋 Overview' },
+];
+
+export const GymPage = () => {
+  const [sub, setSub] = useState('log');
+
+  return (
+    <div>
+      <div
+        style={{
+          display: 'flex',
+          gap: '6px',
+          padding: '8px 10px',
+          background: '#0b1220',
+        }}
+      >
+        {GYM_SUBTABS.map((t) => {
+          const isActive = sub === t.id;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setSub(t.id)}
+              style={{
+                flex: 1,
+                padding: '9px 10px',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                background: isActive ? '#2d6a4f' : '#1f2937',
+                color: isActive ? '#ffffff' : '#9ca3af',
+              }}
+            >
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+      {sub === 'log' ? <GymLog /> : <GymOverview />}
+    </div>
+  );
+};
