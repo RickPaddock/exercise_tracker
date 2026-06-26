@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import GymLog from './GymTracker';
+import GymProgress from './GymProgress';
 
 // Styles adapted from Rick's Nutrition & Training plan, scoped under `.rick-plan`
 // so they never clash with the Igor tracker (which uses Tailwind utilities).
@@ -363,6 +364,7 @@ const GymOverview = () => (
 // ============ GYM PAGE (Workout Log + Overview subtabs) ============
 const GYM_SUBTABS = [
   { id: 'log', label: '🏋️ Workout Log' },
+  { id: 'progress', label: '📈 Progress' },
   { id: 'overview', label: '📋 Overview' },
 ];
 
@@ -404,7 +406,9 @@ export const GymPage = () => {
           );
         })}
       </div>
-      {sub === 'log' ? <GymLog /> : <GymOverview />}
+      {sub === 'log' && <GymLog />}
+      {sub === 'progress' && <GymProgress />}
+      {sub === 'overview' && <GymOverview />}
     </div>
   );
 };

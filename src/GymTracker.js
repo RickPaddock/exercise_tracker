@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight } from 'lucide-react';
 
 // The three strength sessions, with their exercises and how many sets to log.
-const WORKOUTS = {
+export const WORKOUTS = {
   monday: {
     title: 'Monday — Full Body (upper-biased)',
     exercises: [
@@ -42,7 +42,7 @@ const WORKOUTS = {
 };
 
 // Weekly schedule keyed by JS weekday (0 = Sunday … 6 = Saturday).
-const SCHEDULE = {
+export const SCHEDULE = {
   1: { type: 'strength', workout: 'monday', label: 'Strength — Full body', pill: 'upper-biased' },
   2: { type: 'rest', label: 'Light jog or rest' },
   3: { type: 'strength', workout: 'wednesday', label: 'Strength — Full body', pill: 'heaviest legs' },
@@ -53,11 +53,11 @@ const SCHEDULE = {
 };
 
 // Mon → Sun ordering for display.
-const WEEK_ORDER = [1, 2, 3, 4, 5, 6, 0];
-const DAY_NAMES = { 0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat' };
-const DAY_MS = 24 * 60 * 60 * 1000;
+export const WEEK_ORDER = [1, 2, 3, 4, 5, 6, 0];
+export const DAY_NAMES = { 0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat' };
+export const DAY_MS = 24 * 60 * 60 * 1000;
 
-const getMonday = (input) => {
+export const getMonday = (input) => {
   const date = new Date(input);
   date.setHours(0, 0, 0, 0);
   const day = date.getDay();
@@ -66,13 +66,13 @@ const getMonday = (input) => {
   return date;
 };
 
-const addDays = (date, n) => {
+export const addDays = (date, n) => {
   const out = new Date(date);
   out.setDate(out.getDate() + n);
   return out;
 };
 
-const toKey = (d) =>
+export const toKey = (d) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
 const GymLog = () => {
