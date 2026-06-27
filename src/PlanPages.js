@@ -68,7 +68,9 @@ export const NutritionPage = () => (
         <ul className="meal-items">
           <li>4 eggs scrambled in olive oil, smoked paprika, black pepper</li>
           <li>200g Kri Kri 0% yogurt</li>
-          <li>½ avocado + handful blueberries</li>
+          <li>½ avocado</li>
+          <li>Handful blueberries</li>
+          <li>40g oats</li>
         </ul>
       </div>
 
@@ -203,9 +205,18 @@ export const NutritionPage = () => (
         <li><strong>2 boiled eggs</strong> (+12g) — boil 10 Sunday, keep in shell</li>
         <li><strong>200g cottage cheese</strong> (+24g) — ideal post-futsal / before bed (slow casein)</li>
         <li><strong>Kri Kri yogurt + berries</strong> (+10g) — if genuinely hungry</li>
-        <li><strong>Whey shake</strong> (+25-30g) — fastest way to top up the daily target</li>
+        <li><strong>Whey shake</strong> (+28g) — fastest way to top up the daily target</li>
       </ul>
       <div className="rule-box"><p>❌ No added sugar · No flour · No fast food. ✅ Snack only when hungry, not from habit.</p></div>
+    </div>
+
+    {/* SUPPLEMENTS */}
+    <div className="section">
+      <div className="section-title">Supplements</div>
+      <ul className="meal-items">
+        <li><strong>USN Blue Lab 100% Whey</strong> — 1 scoop = 24g protein, low sugar</li>
+        <li><strong>Creatine Monohydrate</strong> — 5g/day, every day including rest days</li>
+      </ul>
     </div>
 
     {/* COOK SEQUENCE */}
@@ -234,7 +245,8 @@ export const NutritionPage = () => (
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Cottage cheese</span><span className="shop-qty">500g</span></div>
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Oats</span><span className="shop-qty">500g</span></div>
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Peanut butter (natural)</span><span className="shop-qty">1 jar</span></div>
-        <div className="shop-item"><input type="checkbox" /><span className="shop-name">Whey protein (optional)</span><span className="shop-qty">1 tub</span></div>
+        <div className="shop-item"><input type="checkbox" /><span className="shop-name">USN Blue Lab 100% Whey</span><span className="shop-qty">1 tub</span></div>
+        <div className="shop-item"><input type="checkbox" /><span className="shop-name">Creatine monohydrate</span><span className="shop-qty">5g/day</span></div>
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Basmati rice</span><span className="shop-qty">500g</span></div>
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Chickpeas (dried)</span><span className="shop-qty">150g</span></div>
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Broccoli</span><span className="shop-qty">1.3kg</span></div>
