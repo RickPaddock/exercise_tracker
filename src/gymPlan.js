@@ -122,3 +122,26 @@ export const savePlan = (plan) => {
     localStorage.setItem('gym_plan', JSON.stringify(plan));
   } catch (e) {}
 };
+
+// Per-week day-arrangement overrides, keyed by that week's Monday date (toKey).
+// Value is a 7-slot array like plan.week. Weeks without an override use plan.week.
+export const loadWeekPlans = () => {
+  try {
+    const r = JSON.parse(localStorage.getItem('gym_weekPlans'));
+    return r && typeof r === 'object' && !Array.isArray(r) ? r : {};
+  } catch (e) {
+    return {};
+  }
+};
+
+export const saveWeekPlans = (wp) => {
+  try {
+    localStorage.setItem('gym_weekPlans', JSON.stringify(wp));
+  } catch (e) {}
+};
+
+// The day arrangement in effect for a given week's Monday key.
+export const weekArrangement = (plan, weekPlans, mondayKey) => {
+  const o = weekPlans[mondayKey];
+  return Array.isArray(o) && o.length === 7 ? o : plan.week;
+};

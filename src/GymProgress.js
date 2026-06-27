@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { TrendingUp, Moon, Sun } from 'lucide-react';
 import {
   loadPlan,
+  loadWeekPlans,
+  weekArrangement,
   ACTIVITY_META,
   WEEK_ORDER,
   WEEK_DAY_NAMES,
@@ -40,6 +42,7 @@ const GymProgress = () => {
     try { return JSON.parse(localStorage.getItem('gym_log')) || {}; } catch (e) { return {}; }
   })();
   const plan = loadPlan();
+  const weekPlans = loadWeekPlans();
 
   const toggleDark = () => {
     setIsDarkMode((p) => {
@@ -138,6 +141,7 @@ const GymProgress = () => {
                 <tbody>
                   {weeks.map((w) => {
                     const ws = weekStartFor(w);
+                    const arrangement = weekArrangement(plan, weekPlans, toKey(ws));
                     return (
                       <tr key={w}>
                         <td className={`text-xs p-1.5 whitespace-nowrap ${theme.textMuted}`}>
@@ -147,7 +151,7 @@ const GymProgress = () => {
                         {WEEK_ORDER.map((wd, i) => {
                           const date = addDays(ws, i);
                           const dateKey = toKey(date);
-                          const slot = plan.week[i];
+                          const slot = arrangement[i];
                           const meta = ACTIVITY_META[slot.activityId];
                           const day = log[dateKey] || {};
                           const logged = meta.type === 'strength'
