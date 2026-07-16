@@ -41,6 +41,8 @@ const PLAN_CSS = `
 .rick-plan table.workout td { font-size: 13px; padding: 7px 4px; border-bottom: 1px solid #f2f2f2; color: #333; vertical-align: top; }
 .rick-plan table.workout td.ex { font-weight: 600; }
 .rick-plan table.workout td.sets { color: #2d6a4f; font-weight: 600; white-space: nowrap; }
+.rick-plan table.workout td.ex a { color: #2d6a4f; text-decoration: none; border-bottom: 1px dotted #9bbfae; }
+.rick-plan table.workout td.ex a:hover { text-decoration: underline; }
 .rick-plan .cue { font-size: 12px; color: #777; font-style: italic; }
 .rick-plan .week-grid { display: grid; grid-template-columns: 70px 1fr; gap: 0; }
 .rick-plan .week-day { font-weight: 700; font-size: 13px; padding: 9px 8px; border-bottom: 1px solid #f2f2f2; color: #2d6a4f; }
@@ -50,6 +52,11 @@ const PLAN_CSS = `
 `;
 
 const PlanStyles = () => <style>{PLAN_CSS}</style>;
+
+// MuscleWiki demo link. ?model=m defaults to the male demo on exercise pages.
+const ExLink = ({ href, children }) => (
+  <a href={href} target="_blank" rel="noopener noreferrer">{children}</a>
+);
 
 // Sunday batch cook — one action per step, exact amounts restated every time.
 const COOK_STEPS = [
@@ -348,13 +355,13 @@ const GymOverview = () => (
       <table className="workout">
         <tbody>
           <tr><th>Exercise</th><th>Sets×Reps</th></tr>
-          <tr><td className="ex">Incline chest press<div className="cue">elbows ~45°, control down, press up</div></td><td className="sets">2 × 6–8</td></tr>
-          <tr><td className="ex">Cable fly<div className="cue">slight bend in elbow, squeeze chest</div></td><td className="sets">2 × 10–12</td></tr>
-          <tr><td className="ex">Chest-supported row<div className="cue">pull to ribs, shoulder blades back</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex">Lat pulldown<div className="cue">chest up, drive elbows down</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex">Leg extension</td><td className="sets">1×8–10, 1×10–12</td></tr>
-          <tr><td className="ex">Leg press<div className="cue">feet shoulder-width, don't lock knees hard</div></td><td className="sets">2 × 6–8</td></tr>
-          <tr><td className="ex">Superset: bicep curl + tricep pushdown</td><td className="sets">3 × 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-incline-bench-press?model=m">Incline chest press</ExLink><div className="cue">elbows ~45°, control down, press up</div></td><td className="sets">2 × 6–8</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/cable-pec-fly?model=m">Cable fly</ExLink><div className="cue">slight bend in elbow, squeeze chest</div></td><td className="sets">2 × 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/lats">Chest-supported row</ExLink><div className="cue">pull to ribs, shoulder blades back</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Lat pulldown</ExLink><div className="cue">chest up, drive elbows down</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-extension?model=m">Leg extension</ExLink></td><td className="sets">1×8–10, 1×10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-press?model=m">Leg press</ExLink><div className="cue">feet shoulder-width, don't lock knees hard</div></td><td className="sets">2 × 6–8</td></tr>
+          <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-curl?model=m">bicep curl</ExLink> + <ExLink href="https://musclewiki.com/exercise/cable-push-down?model=m">tricep pushdown</ExLink></td><td className="sets">3 × 10–12</td></tr>
         </tbody>
       </table>
     </div>
@@ -365,13 +372,13 @@ const GymOverview = () => (
       <table className="workout">
         <tbody>
           <tr><th>Exercise</th><th>Sets×Reps</th></tr>
-          <tr><td className="ex">Shoulder press<div className="cue">don't flare, press slightly forward of head</div></td><td className="sets">2 × 6–8</td></tr>
-          <tr><td className="ex">Chest-supported lateral raise<div className="cue">lead with elbows, pinky high</div></td><td className="sets">2 × 10–12</td></tr>
-          <tr><td className="ex">Seated row</td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex">DB row<div className="cue">flat back, pull to hip</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex">Hamstring curl</td><td className="sets">1×8–10, 1×10–12</td></tr>
-          <tr><td className="ex">⚑ Romanian deadlift<div className="cue">hinge at hips, soft knees, bar close, flat back — GET FORM CHECKED</div></td><td className="sets">2 × 6–8</td></tr>
-          <tr><td className="ex">Superset: DB curl + skullcrushers</td><td className="sets">3 × 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/shoulders">Shoulder press</ExLink><div className="cue">don't flare, press slightly forward of head</div></td><td className="sets">2 × 6–8</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-lateral-raise?model=m">Chest-supported lateral raise</ExLink><div className="cue">lead with elbows, pinky high</div></td><td className="sets">2 × 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-cable-row?model=m">Seated row</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/lats/dumbbells">DB row</ExLink><div className="cue">flat back, pull to hip</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-leg-curl?model=m">Hamstring curl</ExLink></td><td className="sets">1×8–10, 1×10–12</td></tr>
+          <tr><td className="ex">⚑ <ExLink href="https://musclewiki.com/exercise/barbell-romanian-deadlift?model=m">Romanian deadlift</ExLink><div className="cue">hinge at hips, soft knees, bar close, flat back — GET FORM CHECKED</div></td><td className="sets">2 × 6–8</td></tr>
+          <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-curl?model=m">DB curl</ExLink> + <ExLink href="https://musclewiki.com/exercise/dumbbell-skullcrusher?model=m">skullcrushers</ExLink></td><td className="sets">3 × 10–12</td></tr>
         </tbody>
       </table>
     </div>
@@ -382,13 +389,13 @@ const GymOverview = () => (
       <table className="workout">
         <tbody>
           <tr><th>Exercise</th><th>Sets×Reps</th></tr>
-          <tr><td className="ex">Pec dec fly</td><td className="sets">1×8–10, 1×10–12</td></tr>
-          <tr><td className="ex">Seated lateral raise</td><td className="sets">2 × 10–12</td></tr>
-          <tr><td className="ex">Close-grip pulldown</td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex">Low row</td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex">⚑ Squat variation<div className="cue">chest up, knees track over toes, sit back, full depth — GET FORM CHECKED</div></td><td className="sets">6–8, 8–10, 10–12</td></tr>
-          <tr><td className="ex">Lying hamstring curl</td><td className="sets">6–8, 8–10, 10–12</td></tr>
-          <tr><td className="ex">Superset: hammer curls + tricep dips</td><td className="sets">to failure</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/chest">Pec dec fly</ExLink></td><td className="sets">1×8–10, 1×10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-seated-single-arm-full-lateral-raise?model=m">Seated lateral raise</ExLink></td><td className="sets">2 × 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Close-grip pulldown</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-cable-row?model=m">Low row</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
+          <tr><td className="ex">⚑ <ExLink href="https://musclewiki.com/exercise/barbell-squat?model=m">Squat variation</ExLink><div className="cue">chest up, knees track over toes, sit back, full depth — GET FORM CHECKED</div></td><td className="sets">6–8, 8–10, 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-lying-leg-curl?model=m">Lying hamstring curl</ExLink></td><td className="sets">6–8, 8–10, 10–12</td></tr>
+          <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m">hammer curls</ExLink> + <ExLink href="https://musclewiki.com/exercise/dips?model=m">tricep dips</ExLink></td><td className="sets">to failure</td></tr>
         </tbody>
       </table>
     </div>
