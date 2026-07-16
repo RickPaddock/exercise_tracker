@@ -29,6 +29,7 @@ export const toKey = (d) =>
 export const DEFAULT_WORKOUTS = {
   monday: {
     title: 'Full Body (upper-biased)',
+    note: 'If legs are heavy from Sunday futsal, reduce leg press/extension weight or skip leg extensions — scheduling, not failure.',
     exercises: [
       { name: 'Incline chest press', target: '2 × 6–8', sets: 2, cue: 'elbows ~45°, control down, press up' },
       { name: 'Cable fly', target: '2 × 10–12', sets: 2, cue: 'slight bend in elbow, squeeze chest' },
@@ -37,6 +38,7 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Leg extension', target: '1×8–10, 1×10–12', sets: 2 },
       { name: 'Leg press', target: '2 × 6–8', sets: 2, cue: "feet shoulder-width, don't lock knees hard" },
       { name: 'Bicep curl + tricep pushdown (superset)', target: '3 × 10–12', sets: 3 },
+      { name: 'Plank', target: '3 × 45 sec', sets: 3, cue: "straight line shoulders to heels, squeeze glutes, don't let hips sag" },
     ],
   },
   wednesday: {
@@ -46,6 +48,7 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Chest-supported lateral raise', target: '2 × 10–12', sets: 2, cue: 'lead with elbows, pinky high' },
       { name: 'Seated row', target: '1×6–8, 1×8–10', sets: 2 },
       { name: 'DB row', target: '1×6–8, 1×8–10', sets: 2, cue: 'flat back, pull to hip' },
+      { name: 'Face pull', target: '2 × 15', sets: 2, cue: 'pull rope to forehead, elbows high, squeeze shoulder blades — posture priority' },
       { name: 'Hamstring curl', target: '1×8–10, 1×10–12', sets: 2 },
       { name: '⚑ Romanian deadlift', target: '2 × 6–8', sets: 2, cue: 'hinge at hips, soft knees, bar close, flat back — GET FORM CHECKED' },
       { name: 'DB curl + skullcrushers (superset)', target: '3 × 10–12', sets: 3 },
@@ -61,6 +64,7 @@ export const DEFAULT_WORKOUTS = {
       { name: '⚑ Squat variation', target: '6–8, 8–10, 10–12', sets: 3, cue: 'chest up, knees track over toes, sit back, full depth — GET FORM CHECKED' },
       { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3 },
       { name: 'Hammer curls + tricep dips (superset)', target: 'to failure', sets: 3 },
+      { name: 'Hanging knee raise', target: '3 × 10–12', sets: 3, cue: 'hang from a pull-up bar, lift knees to chest with control, no swinging' },
     ],
   },
 };

@@ -426,6 +426,11 @@ const GymLog = () => {
 
                   {isStrength && isOpen && (
                     <div className={`border-t ${theme.border} p-3 sm:p-4 space-y-4`}>
+                      {plan.workouts[slot.activityId].note && (
+                        <div className={`text-xs rounded-md p-2 border ${isDarkMode ? 'bg-gray-800 border-gray-700 text-gray-300' : 'bg-yellow-50 border-yellow-200 text-yellow-800'}`}>
+                          {plan.workouts[slot.activityId].note}
+                        </div>
+                      )}
                       {exercises.map((ex) => (
                         <div key={ex.name}>
                           <div className="flex items-baseline justify-between gap-2">
