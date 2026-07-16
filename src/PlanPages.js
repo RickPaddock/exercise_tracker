@@ -357,7 +357,7 @@ const GymOverview = () => (
           <tr><th>Exercise</th><th>Sets×Reps</th></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-incline-bench-press?model=m">Incline chest press</ExLink><div className="cue">elbows ~45°, control down, press up</div></td><td className="sets">2 × 6–8</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/cable-pec-fly?model=m">Cable fly</ExLink><div className="cue">slight bend in elbow, squeeze chest</div></td><td className="sets">2 × 10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/lats">Chest-supported row</ExLink><div className="cue">pull to ribs, shoulder blades back</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
+          <tr><td className="ex"><ExLink href="https://wellfitinsider.com/workout-tips/chest-supported-row/">Chest-supported row</ExLink><div className="cue">pull to ribs, shoulder blades back</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Lat pulldown</ExLink><div className="cue">chest up, drive elbows down</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-extension?model=m">Leg extension</ExLink></td><td className="sets">1×8–10, 1×10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-press?model=m">Leg press</ExLink><div className="cue">feet shoulder-width, don't lock knees hard</div></td><td className="sets">2 × 6–8</td></tr>
