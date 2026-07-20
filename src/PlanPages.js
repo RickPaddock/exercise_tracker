@@ -95,7 +95,6 @@ export const NutritionPage = () => (
           <li>200g Kri Kri 0% yogurt</li>
           <li>½ avocado</li>
           <li>Handful blueberries</li>
-          <li>40g oats</li>
         </ul>
       </div>
 
