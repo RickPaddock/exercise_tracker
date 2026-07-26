@@ -63,16 +63,15 @@ const COOK_STEPS = [
   { label: 'Night before', text: 'Defrost any frozen protein in the fridge. Soak 150g dried chickpeas in cold water. Make the Greek marinade (juice of 1 lemon, 1 tbsp dried oregano, 3 crushed garlic cloves, 2 tbsp olive oil, ½ tsp salt), coat 600g chicken breast in it, cover, and fridge overnight (or at least 30 min before it roasts).' },
   { label: 'Setup', text: 'Preheat the oven to 200°C fan. Line 3 oven trays with foil or baking paper, and get out 2 saucepans, a large frying pan or wok, a small pan, a meat thermometer, and 10 containers + lids.' },
   { label: 'Season the chicken breast', text: 'Take 900g chicken breast, slice any piece thicker than ~2.5cm down to an even ~2cm, and rub all over with the Cajun mix: 1 tbsp smoked paprika, 2 tsp garlic powder, 2 tsp onion powder, 1 tsp dried oregano, ½–1 tsp cayenne, 1 tsp salt, ½ tsp black pepper, 2 tbsp olive oil. Lay it on tray 1. Lay the marinated 600g Greek breast on tray 2 — both spaced apart so they brown.' },
-  { label: 'Season the thighs', text: 'Take 600g boneless chicken thighs and rub all over with 1 tbsp olive oil, 1 tsp salt, 1 tsp Italian herbs, 1 tsp paprika, 1 tsp garlic powder, 1 tsp onion powder, ½ tsp chilli flakes and 1 tbsp chopped parsley. Put them on a 4th tray or in the air-fryer basket.' },
   { label: 'Prep the veg', text: 'Slice 2 courgettes into 1cm half-moons, cut 2 red peppers into 2cm chunks, and cut 400g broccoli into florets — all onto tray 3. Toss with 2 tbsp olive oil, 1 tsp paprika, 1 tsp garlic powder, ½ tsp salt. Keep the rest of the broccoli for later.' },
-  { label: 'Into the oven', text: 'Put trays 1, 2 and 3 in at 200°C and set a timer for 24 minutes. Cook the 600g thighs at 200°C too — 4th oven tray or air fryer — for 22–25 minutes.' },
+  { label: 'Into the oven', text: 'Put trays 1, 2 and 3 in at 200°C and set a timer for 24 minutes.' },
   { label: 'Rice', text: 'Rinse 500g basmati until the water runs clear, then cook in 750ml water: bring to the boil, lid on, lowest heat for 12 minutes, then off the heat and rest 10 minutes. Do not lift the lid.' },
   { label: 'Eggs', text: 'Put 10 eggs in a pan of cold water, bring to the boil, simmer 9 minutes, then plunge into iced water and fridge in their shells.' },
   { label: 'Beef chilli', text: 'Brown 650g lean beef mince in the wok and pour off the fat. Stir in the spices (2 tsp cumin, 2 tsp smoked paprika, 1 tsp chilli powder, 1 tsp garlic powder, 1 tsp salt) for 30 seconds, then add 2 × 400g cans chopped tomatoes and the drained chickpeas. Simmer 12–15 minutes until thick, then off the heat.' },
-  { label: 'Chicken out, rest, slice', text: 'At 24 minutes, check the breast and thighs are 75°C at the thickest part and take everything out. Rest the chicken 5 minutes, then slice. Leave the veg to cool on its tray. Turn the oven down to 180°C.' },
+  { label: 'Chicken out, rest, slice', text: 'At 24 minutes, check the breast is 75°C at the thickest part and take it out along with the veg. Rest the chicken 5 minutes, then slice. Leave the veg to cool on its tray. Turn the oven down to 180°C.' },
   { label: 'Salmon', text: 'Rub 2 salmon fillets each with 2 tsp olive oil, ¼ tsp garlic powder, ¼ tsp dried dill, a little lemon zest, salt and pepper. Bake at 180°C for 18 minutes, then leave to cool — salmon goes in cold and is never reheated.' },
   { label: 'Sides', text: 'Steam the remaining ~900g broccoli for 4–5 minutes until just tender. Wilt 1kg spinach in the small pan with 1 tbsp olive oil and 2 crushed garlic cloves for 5–7 minutes (if frozen, drain the water off), and finish with a squeeze of lemon and torn basil.' },
-  { label: 'Build the boxes', text: '5 lunch boxes: ~260g rice + a chicken portion each (3 Cajun, 2 Greek) + roasted veg. Dinners, all over wilted spinach: 3 beef chilli (Mon/Wed/Fri), 2 salmon + broccoli (Tue/Thu), 2–3 thighs + broccoli (Sat/Sun).' },
+  { label: 'Build the boxes', text: '5 lunch boxes: ~260g rice + a chicken portion each (3 Cajun, 2 Greek) + roasted veg. 5 dinner boxes, all over wilted spinach: 3 beef chilli (Mon/Wed/Fri), 2 salmon + broccoli (Tue/Thu).' },
   { label: 'Cool + store', text: 'Leave all the lids off for 20–30 minutes to cool, then seal, write the meal + day on each, and put everything in the fridge.' },
 ];
 
@@ -175,7 +174,7 @@ export const NutritionPage = () => (
 
     {/* DINNERS */}
     <div className="section">
-      <div className="section-title">Dinner — NO carbs (batch for the week)</div>
+      <div className="section-title">Dinner — NO carbs (Mon–Fri, 5 containers)</div>
 
       <div className="meal-card">
         <div className="meal-title">Garlic Herb Salmon <span className="protein-badge">~42g</span></div>
@@ -184,15 +183,6 @@ export const NutritionPage = () => (
           <li>Salmon with olive oil, garlic powder, dried dill, lemon zest</li>
           <li>Bake 180°C, 18 min. Eat cold — do NOT microwave</li>
           <li>Serve with roasted veg + wilted spinach</li>
-        </ul>
-      </div>
-
-      <div className="meal-card">
-        <div className="meal-title">Cajun Garlic-Herb Chicken Thighs <span className="protein-badge">~45g</span></div>
-        <a href="https://www.tiktok.com/@jalalsamfit/video/7436472441423105313" target="_blank" rel="noopener noreferrer">recipe ↗</a>
-        <ul className="meal-items">
-          <li>Thighs with salt, Italian herbs, chilli flakes, parsley, garlic + onion powder, paprika, olive oil</li>
-          <li>Bake/air-fry 200°C, 22–25 min. Serve with greens (skip the mash for dinner)</li>
         </ul>
       </div>
 
@@ -247,7 +237,7 @@ export const NutritionPage = () => (
     <div className="section">
       <div className="section-title">Sunday Cook — Step by Step</div>
 
-      <div className="rule-box"><p><strong>What you're making — uses everything you bought.</strong> <strong>Chicken breast (1.5kg):</strong> 5 weekday lunches — 900g Cajun (3 boxes), 600g Greek (2 boxes). <strong>Beef mince (650g):</strong> 3 chilli dinners (Mon/Wed/Fri). <strong>Salmon (2 fillets):</strong> 2 dinners (Tue/Thu). <strong>Chicken thighs (600g):</strong> 2–3 dinners (Sat/Sun). <strong>= 5 lunches + a full week of dinners</strong>, plus 10 boiled eggs for snacks. Follow the steps in order — each one is a single job.</p></div>
+      <div className="rule-box"><p><strong>What you're making — Mon–Fri, uses everything you bought.</strong> <strong>Chicken breast (1.5kg):</strong> 5 lunches — 900g Cajun (3 boxes), 600g Greek (2 boxes). <strong>Beef mince (650g):</strong> 3 chilli dinners (Mon/Wed/Fri). <strong>Salmon (2 fillets):</strong> 2 dinners (Tue/Thu). <strong>= 5 lunches + 5 weekday dinners</strong>, plus 10 boiled eggs for snacks. Follow the steps in order — each one is a single job.</p></div>
 
       {COOK_STEPS.map((s, i) => (
         <div className="step" key={i}>
@@ -267,7 +257,6 @@ export const NutritionPage = () => (
       <div className="section-title">Weekly Shopping List</div>
       <div className="shop-grid">
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Chicken breast fillets</span><span className="shop-qty">1.5kg</span></div>
-        <div className="shop-item"><input type="checkbox" /><span className="shop-name">Chicken thighs (boneless)</span><span className="shop-qty">600g</span></div>
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Beef mince (lean)</span><span className="shop-qty">650g</span></div>
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Salmon fillets</span><span className="shop-qty">2–3</span></div>
         <div className="shop-item"><input type="checkbox" /><span className="shop-name">Eggs</span><span className="shop-qty">36</span></div>
