@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, Moon, Sun } from 'lucide-react';
+import { TrendingUp, Moon, Sun, Trash2 } from 'lucide-react';
 import {
   loadPlan,
   loadWeekPlans,
@@ -38,9 +38,9 @@ const GymProgress = () => {
     try { return localStorage.getItem('gym_startDate') || new Date().toISOString().split('T')[0]; }
     catch (e) { return new Date().toISOString().split('T')[0]; }
   })();
-  const log = (() => {
+  const [log, setLog] = useState(() => {
     try { return JSON.parse(localStorage.getItem('gym_log')) || {}; } catch (e) { return {}; }
-  })();
+  });
   const plan = loadPlan();
   const weekPlans = loadWeekPlans();
 
@@ -57,14 +57,36 @@ const GymProgress = () => {
 
   const currentOffset = Math.max(0, offsetOf(new Date()));
   let maxOffset = currentOffset;
+  let minWeek = 0;
   Object.keys(log).forEach((dateKey) => {
     const d = new Date(dateKey);
     if (Number.isNaN(d.getTime())) return;
     const off = offsetOf(d);
     if (off > maxOffset) maxOffset = off;
+    if (off < minWeek) minWeek = off; // include pre-start weeks so they can be deleted
   });
-  const weeks = Array.from({ length: maxOffset + 1 }, (_, i) => i);
+  const weeks = Array.from({ length: maxOffset - minWeek + 1 }, (_, i) => minWeek + i);
   const weekStartFor = (w) => addDays(startMonday, w * 7);
+
+  const weekHasData = (w) =>
+    Object.keys(log).some((k) => {
+      const d = new Date(k);
+      if (Number.isNaN(d.getTime()) || offsetOf(d) !== w) return false;
+      const day = log[k];
+      return day && (day._done || Object.keys(day).some((ex) => ex !== '_done' && ex !== '_swaps' && hasAnyEntry(day[ex])));
+    });
+
+  const deleteWeek = (w) => {
+    const label = weekStartFor(w).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    if (!window.confirm(`Delete all logged data for the week of ${label} (Wk ${w + 1})? This can't be undone.`)) return;
+    const next = { ...log };
+    Object.keys(next).forEach((k) => {
+      const d = new Date(k);
+      if (!Number.isNaN(d.getTime()) && offsetOf(d) === w) delete next[k];
+    });
+    setLog(next);
+    try { localStorage.setItem('gym_log', JSON.stringify(next)); } catch (e) {}
+  };
 
   const theme = {
     bg: isDarkMode ? 'bg-black' : 'bg-white',
@@ -137,6 +159,7 @@ const GymProgress = () => {
                     {WEEK_DAY_NAMES.map((n) => (
                       <th key={n} className="text-center text-xs font-semibold p-1.5">{n}</th>
                     ))}
+                    <th className="p-1.5"></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -173,6 +196,18 @@ const GymProgress = () => {
                             </td>
                           );
                         })}
+                        <td className="p-1 text-center">
+                          {weekHasData(w) && (
+                            <button
+                              type="button"
+                              onClick={() => deleteWeek(w)}
+                              title={`Delete Wk ${w + 1}'s logged data`}
+                              className={`p-1 rounded ${isDarkMode ? 'text-gray-400 hover:bg-red-900 hover:text-red-300' : 'text-gray-400 hover:bg-red-100 hover:text-red-600'}`}
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+                        </td>
                       </tr>
                     );
                   })}
@@ -181,6 +216,7 @@ const GymProgress = () => {
               <div className={`mt-3 text-xs ${theme.textMuted} flex flex-wrap gap-x-4 gap-y-1`}>
                 <span><span className="inline-block w-3 h-3 rounded-sm bg-green-500 align-middle mr-1" />done / logged</span>
                 <span>S = strength · F = futsal · J = jog/rest · W = walk/recovery</span>
+                <span className="inline-flex items-center gap-1"><Trash2 className="w-3 h-3" /> delete a week's data</span>
               </div>
             </div>
 
