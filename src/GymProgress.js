@@ -99,7 +99,8 @@ const GymProgress = () => {
       .filter((k) => hasAnyEntry(log[k] && log[k][exName]))
       .map((k) => {
         const d = new Date(k);
-        return { dateKey: k, date: d, w: offsetOf(d), sets: log[k][exName], best: bestWeight(log[k][exName]) };
+        const swap = (log[k]._swaps && log[k]._swaps[exName]) || '';
+        return { dateKey: k, date: d, w: offsetOf(d), sets: log[k][exName], best: bestWeight(log[k][exName]), swap };
       })
       .sort((a, b) => a.date - b.date);
 
@@ -224,6 +225,7 @@ const GymProgress = () => {
                                       <td className="text-xs p-1.5 whitespace-nowrap">
                                         <span className="font-semibold">Wk {r.w + 1}</span>
                                         <span className={`${theme.textMuted}`}> · {r.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                                        {r.swap && <div className={`text-[10px] italic ${isDarkMode ? 'text-amber-300' : 'text-amber-700'}`}>↳ {r.swap}</div>}
                                       </td>
                                       {Array.from({ length: ex.sets }, (_, i) => i).map((i) => {
                                         const s = Array.isArray(r.sets) ? r.sets[i] : null;

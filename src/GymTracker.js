@@ -111,6 +111,18 @@ const GymLog = () => {
   const toggleDone = (dateKey) => {
     setLog((prev) => ({ ...prev, [dateKey]: { ...(prev[dateKey] || {}), _done: !(prev[dateKey] && prev[dateKey]._done) } }));
   };
+  const getSwap = (dateKey, exName) =>
+    (log[dateKey] && log[dateKey]._swaps && log[dateKey]._swaps[exName]) || '';
+  const setSwap = (dateKey, exName, value) => {
+    setLog((prev) => {
+      const day = { ...(prev[dateKey] || {}) };
+      const swaps = { ...(day._swaps || {}) };
+      if (value) swaps[exName] = value;
+      else delete swaps[exName];
+      day._swaps = swaps;
+      return { ...prev, [dateKey]: day };
+    });
+  };
 
   // ---- per-week day arrangement ----
   const setWeekArrangement = (newWeek) => {
@@ -443,6 +455,20 @@ const GymLog = () => {
                             <span className="text-xs text-green-500 font-semibold whitespace-nowrap">{ex.target}</span>
                           </div>
                           {ex.cue && <div className={`text-xs italic ${theme.textMuted} mb-1`}>{ex.cue}</div>}
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <span className={`text-xs ${theme.textMuted} whitespace-nowrap`}>Did instead:</span>
+                            <input
+                              type="text"
+                              value={getSwap(dateKey, ex.name)}
+                              onChange={(e) => setSwap(dateKey, ex.name, e.target.value)}
+                              placeholder="same as plan — or note a machine/variation"
+                              className={`flex-1 min-w-0 px-2 py-1 rounded-md border text-xs focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                                getSwap(dateKey, ex.name)
+                                  ? isDarkMode ? 'bg-amber-900/40 border-amber-700 text-amber-100' : 'bg-amber-50 border-amber-300 text-amber-900'
+                                  : theme.input
+                              }`}
+                            />
+                          </div>
                           <div className="space-y-1.5 mt-1.5">
                             {Array.from({ length: ex.sets }, (_, i2) => i2).map((setIdx) => (
                               <div key={setIdx} className="flex items-center gap-2">
