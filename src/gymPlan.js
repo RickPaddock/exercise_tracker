@@ -31,46 +31,46 @@ export const DEFAULT_WORKOUTS = {
     title: 'Full Body (upper-biased)',
     note: 'If legs are heavy from Sunday futsal, reduce leg press/extension weight or skip leg extensions — scheduling, not failure.',
     exercises: [
-      { name: 'Incline chest press', target: '2 × 6–8', sets: 2, cue: 'elbows ~45°, control down, press up' },
-      { name: 'Cable fly', target: '2 × 10–12', sets: 2, cue: 'slight bend in elbow, squeeze chest' },
-      { name: 'Chest-supported row', target: '1×6–8, 1×8–10', sets: 2, cue: 'pull to ribs, shoulder blades back' },
-      { name: 'Lat pulldown', target: '1×6–8, 1×8–10', sets: 2, cue: 'chest up, drive elbows down' },
-      { name: 'Leg extension', target: '1×8–10, 1×10–12', sets: 2 },
-      { name: 'Leg press', target: '2 × 6–8', sets: 2, cue: "feet shoulder-width, don't lock knees hard" },
-      { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing' },
-      { name: 'Bicep curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with tricep pushdown — alternate, minimal rest' },
-      { name: 'Tricep pushdown', target: '3 × 10–12', sets: 3, tag: 'superset' },
-      { name: 'Plank', target: '3 × 45 sec', sets: 3, cue: "straight line shoulders to heels, squeeze glutes, don't let hips sag" },
+      { name: 'Incline chest press', target: '2 × 6–8', sets: 2, cue: 'elbows ~45°, control down, press up', link: 'https://musclewiki.com/exercise/dumbbell-incline-bench-press?model=m' },
+      { name: 'Cable fly', target: '2 × 10–12', sets: 2, cue: 'slight bend in elbow, squeeze chest', link: 'https://musclewiki.com/exercise/cable-pec-fly?model=m' },
+      { name: 'Chest-supported row', target: '1×6–8, 1×8–10', sets: 2, cue: 'pull to ribs, shoulder blades back', link: 'https://wellfitinsider.com/workout-tips/chest-supported-row/' },
+      { name: 'Lat pulldown', target: '1×6–8, 1×8–10', sets: 2, cue: 'chest up, drive elbows down', link: 'https://musclewiki.com/exercise/machine-pulldown?model=m' },
+      { name: 'Leg extension', target: '1×8–10, 1×10–12', sets: 2, link: 'https://musclewiki.com/exercise/machine-leg-extension?model=m' },
+      { name: 'Leg press', target: '2 × 6–8', sets: 2, cue: "feet shoulder-width, don't lock knees hard", link: 'https://musclewiki.com/exercise/machine-leg-press?model=m' },
+      { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing', link: 'https://musclewiki.com/exercises/calves' },
+      { name: 'Bicep curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with tricep pushdown — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-curl?model=m' },
+      { name: 'Tricep pushdown', target: '3 × 10–12', sets: 3, tag: 'superset', link: 'https://barbend.com/triceps-pushdown/' },
+      { name: 'Plank', target: '3 × 45 sec', sets: 3, cue: "straight line shoulders to heels, squeeze glutes, don't let hips sag", link: 'https://musclewiki.com/exercise/plank?model=m' },
     ],
   },
   wednesday: {
     title: 'Full Body (heaviest legs)',
     exercises: [
-      { name: 'Shoulder press', target: '2 × 6–8', sets: 2, cue: "don't flare, press slightly forward of head" },
-      { name: 'Chest-supported lateral raise', target: '2 × 10–12', sets: 2, cue: 'lead with elbows, pinky high' },
-      { name: 'Seated row', target: '1×6–8, 1×8–10', sets: 2 },
-      { name: 'DB row', target: '1×6–8, 1×8–10', sets: 2, cue: 'flat back, pull to hip' },
-      { name: 'Face pull', target: '2 × 15', sets: 2, cue: 'pull rope to forehead, elbows high, squeeze shoulder blades — posture priority' },
-      { name: 'Hamstring curl', target: '1×8–10, 1×10–12', sets: 2 },
-      { name: '⚑ Romanian deadlift', target: '2 × 6–8', sets: 2, cue: 'hinge at hips, soft knees, bar close, flat back — GET FORM CHECKED' },
-      { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing' },
-      { name: 'DB curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with skullcrushers — alternate, minimal rest' },
-      { name: 'Skullcrushers', target: '3 × 10–12', sets: 3, tag: 'superset' },
+      { name: 'Shoulder press', target: '2 × 6–8', sets: 2, cue: "don't flare, press slightly forward of head", link: 'https://musclewiki.com/exercises/shoulders' },
+      { name: 'Chest-supported lateral raise', target: '2 × 10–12', sets: 2, cue: 'lead with elbows, pinky high', link: 'https://musclewiki.com/exercise/dumbbell-lateral-raise?model=m' },
+      { name: 'Seated row', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-seated-cable-row?model=m' },
+      { name: 'DB row', target: '1×6–8, 1×8–10', sets: 2, cue: 'flat back, pull to hip', link: 'https://musclewiki.com/exercises/lats/dumbbells' },
+      { name: 'Face pull', target: '2 × 15', sets: 2, cue: 'pull rope to forehead, elbows high, squeeze shoulder blades — posture priority', link: 'https://musclewiki.com/exercise/cable-face-pull?model=m' },
+      { name: 'Hamstring curl', target: '1×8–10, 1×10–12', sets: 2, link: 'https://musclewiki.com/exercise/machine-seated-leg-curl?model=m' },
+      { name: '⚑ Romanian deadlift', target: '2 × 6–8', sets: 2, cue: 'hinge at hips, soft knees, bar close, flat back — GET FORM CHECKED', link: 'https://musclewiki.com/exercise/barbell-romanian-deadlift?model=m' },
+      { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing', link: 'https://musclewiki.com/exercises/calves' },
+      { name: 'DB curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with skullcrushers — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-curl?model=m' },
+      { name: 'Skullcrushers', target: '3 × 10–12', sets: 3, tag: 'superset', link: 'https://musclewiki.com/exercise/dumbbell-skullcrusher?model=m' },
     ],
   },
   friday: {
     title: 'Full Body',
     exercises: [
-      { name: 'Pec dec fly', target: '1×8–10, 1×10–12', sets: 2 },
-      { name: 'Seated lateral raise', target: '2 × 10–12', sets: 2 },
-      { name: 'Close-grip pulldown', target: '1×6–8, 1×8–10', sets: 2 },
-      { name: 'Low row', target: '1×6–8, 1×8–10', sets: 2 },
-      { name: '⚑ Squat variation', target: '6–8, 8–10, 10–12', sets: 3, cue: 'chest up, knees track over toes, sit back, full depth — GET FORM CHECKED' },
-      { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3 },
-      { name: 'Seated calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause at the top; seated hits the lower calf (soleus)' },
-      { name: 'Hammer curls', target: 'to failure', sets: 3, tag: 'superset', cue: 'superset with tricep dips — alternate, minimal rest' },
-      { name: 'Tricep dips', target: 'to failure', sets: 3, tag: 'superset' },
-      { name: 'Hanging knee raise', target: '3 × 10–12', sets: 3, cue: 'hang from a pull-up bar, lift knees to chest with control, no swinging' },
+      { name: 'Pec dec fly', target: '1×8–10, 1×10–12', sets: 2, link: 'https://musclewiki.com/exercises/chest' },
+      { name: 'Seated lateral raise', target: '2 × 10–12', sets: 2, link: 'https://musclewiki.com/exercise/dumbbell-seated-single-arm-full-lateral-raise?model=m' },
+      { name: 'Close-grip pulldown', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-pulldown?model=m' },
+      { name: 'Low row', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-seated-cable-row?model=m' },
+      { name: '⚑ Squat variation', target: '6–8, 8–10, 10–12', sets: 3, cue: 'chest up, knees track over toes, sit back, full depth — GET FORM CHECKED', link: 'https://musclewiki.com/exercise/barbell-squat?model=m' },
+      { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3, link: 'https://musclewiki.com/exercise/machine-lying-leg-curl?model=m' },
+      { name: 'Seated calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause at the top; seated hits the lower calf (soleus)', link: 'https://musclewiki.com/exercises/calves' },
+      { name: 'Hammer curls', target: 'to failure', sets: 3, tag: 'superset', cue: 'superset with tricep dips — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m' },
+      { name: 'Tricep dips', target: 'to failure', sets: 3, tag: 'superset', link: 'https://musclewiki.com/exercise/dips?model=m' },
+      { name: 'Hanging knee raise', target: '3 × 10–12', sets: 3, cue: 'hang from a pull-up bar, lift knees to chest with control, no swinging', link: 'https://musclewiki.com/exercise/hanging-knee-raises?model=m' },
     ],
   },
 };
@@ -111,10 +111,18 @@ export const loadPlan = () => {
       const workouts = {};
       ['monday', 'wednesday', 'friday'].forEach((k) => {
         const w = raw.workouts[k];
-        workouts[k] =
-          w && Array.isArray(w.exercises) && w.exercises.length
-            ? { title: w.title || DEFAULT_WORKOUTS[k].title, exercises: w.exercises }
-            : clone(DEFAULT_WORKOUTS[k]);
+        if (w && Array.isArray(w.exercises) && w.exercises.length) {
+          // Backfill link/cue/tag from defaults by name so saved plans still get demo links.
+          const byName = {};
+          DEFAULT_WORKOUTS[k].exercises.forEach((e) => { byName[e.name] = e; });
+          const exercises = w.exercises.map((e) => {
+            const def = byName[e.name];
+            return def ? { ...def, ...e, link: e.link || def.link } : e;
+          });
+          workouts[k] = { title: w.title || DEFAULT_WORKOUTS[k].title, exercises };
+        } else {
+          workouts[k] = clone(DEFAULT_WORKOUTS[k]);
+        }
       });
       // Make sure every slot references a known activity.
       const week = raw.week.map((slot, i) => ({

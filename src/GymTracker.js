@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight, GripVertical, ArrowUp, ArrowDown, Pencil, Download, Upload } from 'lucide-react';
+import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight, GripVertical, ArrowUp, ArrowDown, Pencil, Download, Upload, ExternalLink } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -447,7 +447,14 @@ const GymLog = () => {
                         <div key={ex.name}>
                           <div className="flex items-baseline justify-between gap-2">
                             <span className="font-semibold text-sm">
-                              {ex.name}
+                              {ex.link ? (
+                                <a href={ex.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 underline decoration-dotted underline-offset-2 hover:text-green-500">
+                                  {ex.name}
+                                  <ExternalLink className="w-3 h-3 opacity-60" />
+                                </a>
+                              ) : (
+                                ex.name
+                              )}
                               {ex.tag === 'superset' && (
                                 <span className={`ml-1.5 align-middle text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded ${isDarkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-100 text-purple-700'}`}>superset</span>
                               )}
