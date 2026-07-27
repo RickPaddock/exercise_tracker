@@ -35,7 +35,7 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Cable fly', target: '2 × 10–12', sets: 2, cue: 'slight bend in elbow, squeeze chest', link: 'https://musclewiki.com/exercise/cable-pec-fly?model=m' },
       { name: 'Chest-supported row', target: '1×6–8, 1×8–10', sets: 2, cue: 'pull to ribs, shoulder blades back', link: 'https://wellfitinsider.com/workout-tips/chest-supported-row/' },
       { name: 'Lat pulldown', target: '1×6–8, 1×8–10', sets: 2, cue: 'chest up, drive elbows down', link: 'https://musclewiki.com/exercise/machine-pulldown?model=m' },
-      { name: 'Reverse pec-dec fly', target: '3 × 12–15', sets: 3, cue: 'chest against pad, lead with elbows, squeeze shoulder blades together, controlled — rear delts + posture (no machine? bent-over DB reverse flyes)', link: 'https://musclewiki.com/exercise/machine-rear-delt-fly?model=m' },
+      { name: 'Reverse pec-dec fly', target: '3 × 12–15', sets: 3, cue: 'chest against pad, lead with elbows, squeeze shoulder blades together, controlled — rear delts + posture (no machine? bent-over DB reverse flyes)', link: 'https://barbend.com/reverse-pec-deck/' },
       { name: 'Leg extension', target: '1×8–10, 1×10–12', sets: 2, link: 'https://musclewiki.com/exercise/machine-leg-extension?model=m' },
       { name: 'Leg press', target: '2 × 6–8', sets: 2, cue: "feet shoulder-width, don't lock knees hard", link: 'https://musclewiki.com/exercise/machine-leg-press?model=m' },
       { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing', link: 'https://musclewiki.com/exercises/calves' },
