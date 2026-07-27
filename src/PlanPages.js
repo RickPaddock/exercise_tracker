@@ -326,6 +326,7 @@ const GymOverview = () => (
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Lat pulldown</ExLink><div className="cue">chest up, drive elbows down</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-extension?model=m">Leg extension</ExLink></td><td className="sets">1×8–10, 1×10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-press?model=m">Leg press</ExLink><div className="cue">feet shoulder-width, don't lock knees hard</div></td><td className="sets">2 × 6–8</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Standing calf raise</ExLink><div className="cue">full stretch at the bottom, pause and squeeze at the top, no bouncing</div></td><td className="sets">3 × 12–15</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-curl?model=m">bicep curl</ExLink> + <ExLink href="https://barbend.com/triceps-pushdown/">tricep pushdown</ExLink></td><td className="sets">3 × 10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/plank?model=m">Plank</ExLink><div className="cue">straight line shoulders to heels, squeeze glutes, don't let hips sag</div></td><td className="sets">3 × 45 sec</td></tr>
         </tbody>

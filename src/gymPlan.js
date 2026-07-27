@@ -37,6 +37,7 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Lat pulldown', target: '1×6–8, 1×8–10', sets: 2, cue: 'chest up, drive elbows down' },
       { name: 'Leg extension', target: '1×8–10, 1×10–12', sets: 2 },
       { name: 'Leg press', target: '2 × 6–8', sets: 2, cue: "feet shoulder-width, don't lock knees hard" },
+      { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing' },
       { name: 'Bicep curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with tricep pushdown — alternate, minimal rest' },
       { name: 'Tricep pushdown', target: '3 × 10–12', sets: 3, tag: 'superset' },
       { name: 'Plank', target: '3 × 45 sec', sets: 3, cue: "straight line shoulders to heels, squeeze glutes, don't let hips sag" },
