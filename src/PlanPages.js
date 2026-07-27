@@ -345,6 +345,7 @@ const GymOverview = () => (
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/cable-face-pull?model=m">Face pull</ExLink><div className="cue">pull rope to forehead, elbows high, squeeze shoulder blades — posture priority</div></td><td className="sets">2 × 15</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-leg-curl?model=m">Hamstring curl</ExLink></td><td className="sets">1×8–10, 1×10–12</td></tr>
           <tr><td className="ex">⚑ <ExLink href="https://musclewiki.com/exercise/barbell-romanian-deadlift?model=m">Romanian deadlift</ExLink><div className="cue">hinge at hips, soft knees, bar close, flat back — GET FORM CHECKED</div></td><td className="sets">2 × 6–8</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Standing calf raise</ExLink><div className="cue">full stretch at the bottom, pause and squeeze at the top, no bouncing</div></td><td className="sets">3 × 12–15</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-curl?model=m">DB curl</ExLink> + <ExLink href="https://musclewiki.com/exercise/dumbbell-skullcrusher?model=m">skullcrushers</ExLink></td><td className="sets">3 × 10–12</td></tr>
         </tbody>
       </table>
@@ -362,6 +363,7 @@ const GymOverview = () => (
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-cable-row?model=m">Low row</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
           <tr><td className="ex">⚑ <ExLink href="https://musclewiki.com/exercise/barbell-squat?model=m">Squat variation</ExLink><div className="cue">chest up, knees track over toes, sit back, full depth — GET FORM CHECKED</div></td><td className="sets">6–8, 8–10, 10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-lying-leg-curl?model=m">Lying hamstring curl</ExLink></td><td className="sets">6–8, 8–10, 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Seated calf raise</ExLink><div className="cue">full stretch at the bottom, pause at the top; seated hits the soleus</div></td><td className="sets">3 × 12–15</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m">hammer curls</ExLink> + <ExLink href="https://musclewiki.com/exercise/dips?model=m">tricep dips</ExLink></td><td className="sets">to failure</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/hanging-knee-raises?model=m">Hanging knee raise</ExLink><div className="cue">hang from a pull-up bar, lift knees to chest with control, no swinging</div></td><td className="sets">3 × 10–12</td></tr>
         </tbody>

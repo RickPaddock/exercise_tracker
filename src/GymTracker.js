@@ -434,7 +434,12 @@ const GymLog = () => {
                       {exercises.map((ex) => (
                         <div key={ex.name}>
                           <div className="flex items-baseline justify-between gap-2">
-                            <span className="font-semibold text-sm">{ex.name}</span>
+                            <span className="font-semibold text-sm">
+                              {ex.name}
+                              {ex.tag === 'superset' && (
+                                <span className={`ml-1.5 align-middle text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 rounded ${isDarkMode ? 'bg-purple-900 text-purple-200' : 'bg-purple-100 text-purple-700'}`}>superset</span>
+                              )}
+                            </span>
                             <span className="text-xs text-green-500 font-semibold whitespace-nowrap">{ex.target}</span>
                           </div>
                           {ex.cue && <div className={`text-xs italic ${theme.textMuted} mb-1`}>{ex.cue}</div>}
