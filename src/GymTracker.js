@@ -124,6 +124,28 @@ const GymLog = () => {
     });
   };
 
+  // Most recent earlier date this exercise was logged (for the "previous" reference).
+  const num = (v) => { const n = parseFloat(v); return Number.isFinite(n) ? n : null; };
+  const setsHaveData = (sets) =>
+    Array.isArray(sets) && sets.some((s) => s && (num(s.weight) !== null || num(s.reps) !== null || num(s.secs) !== null));
+  const prevSession = (dateKey, exName) => {
+    let bestKey = null;
+    Object.keys(log).forEach((k) => {
+      if (k >= dateKey) return; // ISO dates sort chronologically as strings; only earlier days
+      if (!setsHaveData(log[k] && log[k][exName])) return;
+      if (bestKey === null || k > bestKey) bestKey = k;
+    });
+    return bestKey ? { key: bestKey, sets: log[bestKey][exName] } : null;
+  };
+  const fmtPrevSet = (s, unit) => {
+    if (!s) return null;
+    if (unit === 'sec') { const v = num(s.secs); return v !== null ? `${v}s` : null; }
+    const w = num(s.weight);
+    const r = num(s.reps);
+    if (w === null && r === null) return null;
+    return `${w !== null ? `${w}kg` : '—'}${r !== null ? ` × ${r}` : ''}`;
+  };
+
   // ---- per-week day arrangement ----
   const setWeekArrangement = (newWeek) => {
     persistWeekPlans({ ...weekPlans, [weekKey]: newWeek });
@@ -443,7 +465,9 @@ const GymLog = () => {
                           {plan.workouts[slot.activityId].note}
                         </div>
                       )}
-                      {exercises.map((ex) => (
+                      {exercises.map((ex) => {
+                        const prev = prevSession(dateKey, ex.name);
+                        return (
                         <div key={ex.name}>
                           <div className="flex items-baseline justify-between gap-2">
                             <span className="font-semibold text-sm">
@@ -508,11 +532,23 @@ const GymLog = () => {
                                     <span className={`text-xs ${theme.textMuted}`}>reps</span>
                                   </>
                                 )}
+                                {(() => {
+                                  const t = prev && fmtPrevSet(prev.sets && prev.sets[setIdx], ex.unit);
+                                  return t ? (
+                                    <span
+                                      className={`text-xs ${theme.textMuted} ml-auto whitespace-nowrap`}
+                                      title={`Previous session · ${new Date(prev.key).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`}
+                                    >
+                                      prev {t}
+                                    </span>
+                                  ) : null;
+                                })()}
                               </div>
                             ))}
                           </div>
                         </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
