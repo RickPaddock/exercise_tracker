@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight, GripVertical, ArrowUp, ArrowDown, Pencil, Download, Upload, ExternalLink } from 'lucide-react';
+import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight, GripVertical, ArrowUp, ArrowDown, Pencil, Download, Upload, ExternalLink, Scale } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -61,6 +61,9 @@ const GymLog = () => {
   });
   const [plan, setPlan] = useState(() => loadPlan());
   const [weekPlans, setWeekPlans] = useState(() => loadWeekPlans());
+  const [bodyweight, setBodyweight] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('gym_bodyweight')) || {}; } catch (e) { return {}; }
+  });
   const [editMode, setEditMode] = useState(false);
 
   const computeOffset = (start) => {
@@ -74,6 +77,7 @@ const GymLog = () => {
   useEffect(() => { try { localStorage.setItem('gym_startDate', startDate); } catch (e) {} }, [startDate]);
   useEffect(() => { try { localStorage.setItem('gym_log', JSON.stringify(log)); } catch (e) {} }, [log]);
   useEffect(() => { try { localStorage.setItem('gym_isDarkMode', JSON.stringify(isDarkMode)); } catch (e) {} }, [isDarkMode]);
+  useEffect(() => { try { localStorage.setItem('gym_bodyweight', JSON.stringify(bodyweight)); } catch (e) {} }, [bodyweight]);
 
   const persistPlan = (next) => { setPlan(next); savePlan(next); };
   const persistWeekPlans = (next) => { setWeekPlans(next); saveWeekPlans(next); };
@@ -189,7 +193,7 @@ const GymLog = () => {
 
   // ---- export / import ----
   const exportData = () => {
-    const payload = { version: 3, exportedAt: new Date().toISOString(), startDate, plan, weekPlans, log };
+    const payload = { version: 4, exportedAt: new Date().toISOString(), startDate, plan, weekPlans, bodyweight, log };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -211,6 +215,7 @@ const GymLog = () => {
         if (data.startDate) setStartDate(data.startDate);
         if (data.plan && Array.isArray(data.plan.week) && data.plan.workouts) persistPlan(data.plan);
         if (data.weekPlans && typeof data.weekPlans === 'object') persistWeekPlans(data.weekPlans);
+        if (data.bodyweight && typeof data.bodyweight === 'object') setBodyweight(data.bodyweight);
         setWeekOffset(computeOffset(data.startDate || startDate));
         window.alert('Workout log imported.');
       } catch (err) {
@@ -229,12 +234,14 @@ const GymLog = () => {
       setWeekOffset(0);
       persistPlan(defaultPlan());
       persistWeekPlans({});
+      setBodyweight({});
       try {
         localStorage.removeItem('gym_startDate');
         localStorage.removeItem('gym_log');
         localStorage.removeItem('gym_isDarkMode');
         localStorage.removeItem('gym_plan');
         localStorage.removeItem('gym_weekPlans');
+        localStorage.removeItem('gym_bodyweight');
       } catch (e) {}
     }
   };
@@ -251,6 +258,15 @@ const GymLog = () => {
 
   const todayKey = toKey(new Date());
   const weekLabel = `${days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${days[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+
+  // Bodyweight: current week's value + change vs the most recent earlier recorded week.
+  const bwCurrent = parseFloat(bodyweight[weekKey]);
+  const bwPrevKey = Object.keys(bodyweight)
+    .filter((k) => k < weekKey && parseFloat(bodyweight[k]) >= 0 && bodyweight[k] !== '')
+    .sort()
+    .pop();
+  const bwPrev = bwPrevKey ? parseFloat(bodyweight[bwPrevKey]) : null;
+  const bwDelta = Number.isFinite(bwCurrent) && bwPrev !== null ? bwCurrent - bwPrev : null;
 
   const pillEl = (txt) =>
     txt ? <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-900 text-green-200">{txt}</span> : null;
@@ -326,6 +342,29 @@ const GymLog = () => {
         </div>
 
         <WeekNav />
+
+        {/* Weekly bodyweight */}
+        <div className={`rounded-xl border ${theme.border} ${theme.cardBg} p-3 sm:p-4 mb-4 flex items-center gap-3 flex-wrap`}>
+          <div className="flex items-center gap-2">
+            <Scale className="w-4 h-4" />
+            <span className="text-sm font-medium">Bodyweight</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="number" inputMode="decimal" step="0.1" placeholder="kg"
+              value={bodyweight[weekKey] || ''}
+              onChange={(e) => setBodyweight((prev) => ({ ...prev, [weekKey]: e.target.value }))}
+              className={`w-24 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+            />
+            <span className={`text-xs ${theme.textMuted}`}>kg · week of {days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+          </div>
+          {bwDelta !== null && Math.abs(bwDelta) > 0.001 && (
+            <span className={`text-xs font-semibold ${bwDelta < 0 ? 'text-green-500' : 'text-amber-500'}`}>
+              {bwDelta > 0 ? '▲' : '▼'} {Math.abs(bwDelta).toFixed(1)} kg{' '}
+              <span className={`font-normal ${theme.textMuted}`}>vs {new Date(bwPrevKey).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+            </span>
+          )}
+        </div>
 
         {editMode ? (
           /* ============ PLAN EDITOR (current week) ============ */
