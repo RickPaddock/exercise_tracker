@@ -329,7 +329,8 @@ const GymOverview = () => (
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-press?model=m">Leg press</ExLink><div className="cue">feet shoulder-width, don't lock knees hard</div></td><td className="sets">2 × 6–8</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Standing calf raise</ExLink><div className="cue">full stretch at the bottom, pause and squeeze at the top, no bouncing</div></td><td className="sets">3 × 12–15</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-curl?model=m">bicep curl</ExLink> + <ExLink href="https://barbend.com/triceps-pushdown/">tricep pushdown</ExLink></td><td className="sets">3 × 10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/plank?model=m">Plank</ExLink><div className="cue">straight line shoulders to heels, squeeze glutes, don't let hips sag</div></td><td className="sets">3 × 45 sec</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/v-up?model=m">Weighted V-up</ExLink><div className="cue">plate held overhead, raise arms and legs together to meet over midsection, lower with control</div></td><td className="sets">3 × 12–15</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-crunch?model=m">Ab machine weighted crunch</ExLink><div className="cue">weight where the last 2–3 reps are hard; curl the torso by contracting abs, controlled return, no jerking</div></td><td className="sets">3 × 12–15</td></tr>
         </tbody>
       </table>
     </div>
@@ -364,6 +365,7 @@ const GymOverview = () => (
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Close-grip pulldown</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-cable-row?model=m">Low row</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
           <tr><td className="ex">⚑ <ExLink href="https://musclewiki.com/exercise/barbell-squat?model=m">Squat variation</ExLink><div className="cue">chest up, knees track over toes, sit back, full depth — GET FORM CHECKED</div></td><td className="sets">6–8, 8–10, 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/barbell-hip-thrust?model=m">Hip thrust</ExLink><div className="cue">upper back on bench, drive through heels, squeeze glutes hard at top, chin tucked, don't overarch lower back</div></td><td className="sets">3 × 10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-lying-leg-curl?model=m">Lying hamstring curl</ExLink></td><td className="sets">6–8, 8–10, 10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Seated calf raise</ExLink><div className="cue">full stretch at the bottom, pause at the top; seated hits the soleus</div></td><td className="sets">3 × 12–15</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m">hammer curls</ExLink> + <ExLink href="https://musclewiki.com/exercise/dips?model=m">tricep dips</ExLink></td><td className="sets">to failure</td></tr>

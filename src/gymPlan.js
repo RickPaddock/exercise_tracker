@@ -41,7 +41,8 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'Bicep curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with tricep pushdown — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-curl?model=m' },
       { name: 'Tricep pushdown', target: '3 × 10–12', sets: 3, tag: 'superset', link: 'https://barbend.com/triceps-pushdown/' },
-      { name: 'Plank', target: '3 × 45 sec', sets: 3, unit: 'sec', cue: "straight line shoulders to heels, squeeze glutes, don't let hips sag", link: 'https://musclewiki.com/exercise/plank?model=m' },
+      { name: 'Weighted V-up', target: '3 × 12–15', sets: 3, cue: 'lie flat holding a plate overhead, raise arms and legs together to meet over your midsection, lower with control', link: 'https://musclewiki.com/exercise/v-up?model=m' },
+      { name: 'Ab machine weighted crunch', target: '3 × 12–15', sets: 3, cue: 'set a weight where the last 2–3 reps are hard; curl your torso by contracting the abs, controlled return, no jerking', link: 'https://musclewiki.com/exercise/machine-crunch?model=m' },
     ],
   },
   wednesday: {
@@ -67,6 +68,7 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Close-grip pulldown', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-pulldown?model=m' },
       { name: 'Low row', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-seated-cable-row?model=m' },
       { name: '⚑ Squat variation', target: '6–8, 8–10, 10–12', sets: 3, cue: 'chest up, knees track over toes, sit back, full depth — GET FORM CHECKED', link: 'https://musclewiki.com/exercise/barbell-squat?model=m' },
+      { name: 'Hip thrust', target: '3 × 10–12', sets: 3, cue: "upper back on bench, drive through heels, squeeze glutes hard at the top, chin tucked, don't overarch the lower back", link: 'https://musclewiki.com/exercise/barbell-hip-thrust?model=m' },
       { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3, link: 'https://musclewiki.com/exercise/machine-lying-leg-curl?model=m' },
       { name: 'Seated calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause at the top; seated hits the lower calf (soleus)', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'Hammer curls', target: 'to failure', sets: 3, tag: 'superset', cue: 'superset with tricep dips — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m' },
