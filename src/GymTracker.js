@@ -480,20 +480,34 @@ const GymLog = () => {
                             {Array.from({ length: ex.sets }, (_, i2) => i2).map((setIdx) => (
                               <div key={setIdx} className="flex items-center gap-2">
                                 <span className={`text-xs ${theme.textMuted} w-12`}>Set {setIdx + 1}</span>
-                                <input
-                                  type="number" inputMode="decimal" placeholder="kg"
-                                  value={getEntry(dateKey, ex.name, setIdx, 'weight')}
-                                  onChange={(e) => setEntry(dateKey, ex.name, setIdx, 'weight', e.target.value)}
-                                  className={`w-20 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
-                                />
-                                <span className={`text-xs ${theme.textMuted}`}>kg ×</span>
-                                <input
-                                  type="number" inputMode="numeric" placeholder="reps"
-                                  value={getEntry(dateKey, ex.name, setIdx, 'reps')}
-                                  onChange={(e) => setEntry(dateKey, ex.name, setIdx, 'reps', e.target.value)}
-                                  className={`w-20 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
-                                />
-                                <span className={`text-xs ${theme.textMuted}`}>reps</span>
+                                {ex.unit === 'sec' ? (
+                                  <>
+                                    <input
+                                      type="number" inputMode="numeric" placeholder="sec"
+                                      value={getEntry(dateKey, ex.name, setIdx, 'secs')}
+                                      onChange={(e) => setEntry(dateKey, ex.name, setIdx, 'secs', e.target.value)}
+                                      className={`w-24 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                                    />
+                                    <span className={`text-xs ${theme.textMuted}`}>seconds</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <input
+                                      type="number" inputMode="decimal" placeholder="kg"
+                                      value={getEntry(dateKey, ex.name, setIdx, 'weight')}
+                                      onChange={(e) => setEntry(dateKey, ex.name, setIdx, 'weight', e.target.value)}
+                                      className={`w-20 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                                    />
+                                    <span className={`text-xs ${theme.textMuted}`}>kg ×</span>
+                                    <input
+                                      type="number" inputMode="numeric" placeholder="reps"
+                                      value={getEntry(dateKey, ex.name, setIdx, 'reps')}
+                                      onChange={(e) => setEntry(dateKey, ex.name, setIdx, 'reps', e.target.value)}
+                                      className={`w-20 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+                                    />
+                                    <span className={`text-xs ${theme.textMuted}`}>reps</span>
+                                  </>
+                                )}
                               </div>
                             ))}
                           </div>

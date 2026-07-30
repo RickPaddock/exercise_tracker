@@ -41,7 +41,7 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'Bicep curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with tricep pushdown — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-curl?model=m' },
       { name: 'Tricep pushdown', target: '3 × 10–12', sets: 3, tag: 'superset', link: 'https://barbend.com/triceps-pushdown/' },
-      { name: 'Plank', target: '3 × 45 sec', sets: 3, cue: "straight line shoulders to heels, squeeze glutes, don't let hips sag", link: 'https://musclewiki.com/exercise/plank?model=m' },
+      { name: 'Plank', target: '3 × 45 sec', sets: 3, unit: 'sec', cue: "straight line shoulders to heels, squeeze glutes, don't let hips sag", link: 'https://musclewiki.com/exercise/plank?model=m' },
     ],
   },
   wednesday: {

@@ -17,17 +17,17 @@ const num = (v) => {
   const n = parseFloat(v);
   return Number.isFinite(n) ? n : null;
 };
-const bestWeight = (sets) => {
+const bestOf = (sets, field) => {
   if (!Array.isArray(sets)) return null;
   let best = null;
   sets.forEach((s) => {
-    const w = num(s && s.weight);
-    if (w !== null && (best === null || w > best)) best = w;
+    const v = num(s && s[field]);
+    if (v !== null && (best === null || v > best)) best = v;
   });
   return best;
 };
 const hasAnyEntry = (sets) =>
-  Array.isArray(sets) && sets.some((s) => s && (num(s.weight) !== null || num(s.reps) !== null));
+  Array.isArray(sets) && sets.some((s) => s && (num(s.weight) !== null || num(s.reps) !== null || num(s.secs) !== null));
 
 const GymProgress = () => {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -116,13 +116,13 @@ const GymProgress = () => {
   });
 
   // All logged dates that contain a given exercise, sorted, grouped to weeks.
-  const rowsForExercise = (exName) =>
+  const rowsForExercise = (exName, field) =>
     Object.keys(log)
       .filter((k) => hasAnyEntry(log[k] && log[k][exName]))
       .map((k) => {
         const d = new Date(k);
         const swap = (log[k]._swaps && log[k]._swaps[exName]) || '';
-        return { dateKey: k, date: d, w: offsetOf(d), sets: log[k][exName], best: bestWeight(log[k][exName]), swap };
+        return { dateKey: k, date: d, w: offsetOf(d), sets: log[k][exName], best: bestOf(log[k][exName], field), swap };
       })
       .sort((a, b) => a.date - b.date);
 
@@ -226,7 +226,10 @@ const GymProgress = () => {
                 <h2 className="text-base sm:text-lg font-bold mb-3">{ACTIVITY_META[sess.key].label} — {sess.workout.title}</h2>
                 <div className="space-y-4">
                   {sess.workout.exercises.map((ex) => {
-                    const rows = rowsForExercise(ex.name);
+                    const isTime = ex.unit === 'sec';
+                    const field = isTime ? 'secs' : 'weight';
+                    const unit = isTime ? 's' : 'kg';
+                    const rows = rowsForExercise(ex.name, field);
                     return (
                       <div key={ex.name} className={`rounded-lg border ${theme.border} ${theme.cardBg} p-3`}>
                         <div className="flex items-baseline justify-between gap-2 mb-2">
@@ -265,6 +268,14 @@ const GymProgress = () => {
                                       </td>
                                       {Array.from({ length: ex.sets }, (_, i) => i).map((i) => {
                                         const s = Array.isArray(r.sets) ? r.sets[i] : null;
+                                        if (isTime) {
+                                          const secs = num(s && s.secs);
+                                          return (
+                                            <td key={i} className="p-1.5 whitespace-nowrap text-xs">
+                                              {secs !== null ? <span>{secs}s</span> : <span className={theme.textMuted}>—</span>}
+                                            </td>
+                                          );
+                                        }
                                         const w = num(s && s.weight);
                                         const reps = num(s && s.reps);
                                         return (
@@ -278,7 +289,7 @@ const GymProgress = () => {
                                         );
                                       })}
                                       <td className="p-1.5 whitespace-nowrap text-xs font-semibold">
-                                        {r.best !== null ? `${r.best}kg` : '—'}
+                                        {r.best !== null ? `${r.best}${unit}` : '—'}
                                         {trend ? <span className={`ml-1 ${trend.cls}`}>{trend.sym}</span> : null}
                                       </td>
                                     </tr>
