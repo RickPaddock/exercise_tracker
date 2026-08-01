@@ -485,16 +485,31 @@ const GymLog = () => {
                       <span className="text-sm sm:text-base font-medium">{meta.label}</span>
                       {pillEl(meta.pill)}
                     </button>
-                    <button
-                      type="button"
-                      onClick={() => toggleDone(dateKey)}
-                      title="Mark done"
-                      className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center transition-all ${
-                        done ? 'bg-green-500 border-green-500 text-white hover:bg-green-600' : isDarkMode ? 'border-gray-600 hover:border-green-400' : 'border-gray-300 hover:border-green-400'
-                      }`}
-                    >
-                      {done && <Check className="w-4 h-4 sm:w-5 sm:h-5" />}
-                    </button>
+                    {meta.type === 'futsal' ? (
+                      <button
+                        type="button"
+                        onClick={() => toggleDone(dateKey)}
+                        title="Did you play? Optional — tap to mark as played"
+                        className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all whitespace-nowrap ${
+                          done
+                            ? 'bg-green-500 border-green-500 text-white hover:bg-green-600'
+                            : isDarkMode ? 'border-gray-600 text-gray-300 hover:border-green-400' : 'border-gray-300 text-gray-600 hover:border-green-400'
+                        }`}
+                      >
+                        {done ? '✓ Played' : 'Played?'}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => toggleDone(dateKey)}
+                        title="Mark done"
+                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 flex items-center justify-center transition-all ${
+                          done ? 'bg-green-500 border-green-500 text-white hover:bg-green-600' : isDarkMode ? 'border-gray-600 hover:border-green-400' : 'border-gray-300 hover:border-green-400'
+                        }`}
+                      >
+                        {done && <Check className="w-4 h-4 sm:w-5 sm:h-5" />}
+                      </button>
+                    )}
                   </div>
 
                   {isStrength && isOpen && (

@@ -28,16 +28,18 @@ export const toKey = (d) =>
 // Default exercise definitions for the three strength sessions.
 export const DEFAULT_WORKOUTS = {
   monday: {
-    title: 'Full Body (upper-biased)',
-    note: 'If legs are heavy from Sunday futsal, reduce leg press/extension weight or skip leg extensions — scheduling, not failure.',
+    title: 'Full Body (heavy legs)',
+    note: 'Heavy leg day (squat + hip thrust moved here). If your legs are still heavy from Sunday futsal, drop the squat/leg-press load or reps — scheduling, not failure.',
     exercises: [
       { name: 'Incline chest press', target: '2 × 6–8', sets: 2, cue: 'elbows ~45°, control down, press up', link: 'https://musclewiki.com/exercise/dumbbell-incline-bench-press?model=m' },
       { name: 'Cable fly', target: '2 × 10–12', sets: 2, cue: 'slight bend in elbow, squeeze chest', link: 'https://musclewiki.com/exercise/cable-pec-fly?model=m' },
       { name: 'Chest-supported row', target: '1×6–8, 1×8–10', sets: 2, cue: 'pull to ribs, shoulder blades back', link: 'https://wellfitinsider.com/workout-tips/chest-supported-row/' },
       { name: 'Lat pulldown', target: '1×6–8, 1×8–10', sets: 2, cue: 'chest up, drive elbows down', link: 'https://musclewiki.com/exercise/machine-pulldown?model=m' },
       { name: 'Reverse pec-dec fly', target: '3 × 12–15', sets: 3, cue: 'chest against pad, lead with elbows, squeeze shoulder blades together, controlled — rear delts + posture (no machine? bent-over DB reverse flyes)', link: 'https://barbend.com/reverse-pec-deck/' },
-      { name: 'Leg extension', target: '1×8–10, 1×10–12', sets: 2, link: 'https://musclewiki.com/exercise/machine-leg-extension?model=m' },
+      { name: '⚑ Squat variation', target: '6–8, 8–10, 10–12', sets: 3, cue: 'the main heavy lift — chest up, knees track over toes, sit back, full depth — GET FORM CHECKED', link: 'https://musclewiki.com/exercise/barbell-squat?model=m' },
       { name: 'Leg press', target: '2 × 6–8', sets: 2, cue: "feet shoulder-width, don't lock knees hard", link: 'https://musclewiki.com/exercise/machine-leg-press?model=m' },
+      { name: 'Hip thrust', target: '3 × 10–12', sets: 3, cue: "upper back on bench, drive through heels, squeeze glutes hard at the top, chin tucked, don't overarch the lower back", link: 'https://musclewiki.com/exercise/barbell-hip-thrust?model=m' },
+      { name: 'Leg extension', target: '1×8–10, 1×10–12', sets: 2, cue: 'lighter — legs are already worked', link: 'https://musclewiki.com/exercise/machine-leg-extension?model=m' },
       { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'Bicep curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with tricep pushdown — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-curl?model=m' },
       { name: 'Tricep pushdown', target: '3 × 10–12', sets: 3, tag: 'superset', link: 'https://barbend.com/triceps-pushdown/' },
@@ -46,7 +48,7 @@ export const DEFAULT_WORKOUTS = {
     ],
   },
   wednesday: {
-    title: 'Full Body (heaviest legs)',
+    title: 'Full Body (moderate legs)',
     exercises: [
       { name: 'Shoulder press', target: '2 × 6–8', sets: 2, cue: "don't flare, press slightly forward of head", link: 'https://musclewiki.com/exercises/shoulders' },
       { name: 'Chest-supported lateral raise', target: '2 × 10–12', sets: 2, cue: 'lead with elbows, pinky high', link: 'https://musclewiki.com/exercise/dumbbell-lateral-raise?model=m' },
@@ -54,22 +56,20 @@ export const DEFAULT_WORKOUTS = {
       { name: 'DB row', target: '1×6–8, 1×8–10', sets: 2, cue: 'flat back, pull to hip', link: 'https://musclewiki.com/exercises/lats/dumbbells' },
       { name: 'Face pull', target: '2 × 15', sets: 2, cue: 'pull rope to forehead, elbows high, squeeze shoulder blades — posture priority', link: 'https://musclewiki.com/exercise/cable-face-pull?model=m' },
       { name: 'Hamstring curl', target: '1×8–10, 1×10–12', sets: 2, link: 'https://musclewiki.com/exercise/machine-seated-leg-curl?model=m' },
-      { name: '⚑ Romanian deadlift', target: '2 × 6–8', sets: 2, cue: 'hinge at hips, soft knees, bar close, flat back — GET FORM CHECKED', link: 'https://musclewiki.com/exercise/barbell-romanian-deadlift?model=m' },
+      { name: '⚑ Romanian deadlift', target: '2 × 6–8', sets: 2, cue: 'moderate load — save heavy legs for Monday, keep this controlled (hinge at hips, flat back — GET FORM CHECKED)', link: 'https://musclewiki.com/exercise/barbell-romanian-deadlift?model=m' },
       { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'DB curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with skullcrushers — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-curl?model=m' },
       { name: 'Skullcrushers', target: '3 × 10–12', sets: 3, tag: 'superset', link: 'https://musclewiki.com/exercise/dumbbell-skullcrusher?model=m' },
     ],
   },
   friday: {
-    title: 'Full Body',
+    title: 'Full Body (light legs)',
     exercises: [
       { name: 'Pec dec fly', target: '1×8–10, 1×10–12', sets: 2, link: 'https://musclewiki.com/exercises/chest' },
       { name: 'Seated lateral raise', target: '2 × 10–12', sets: 2, link: 'https://musclewiki.com/exercise/dumbbell-seated-single-arm-full-lateral-raise?model=m' },
       { name: 'Close-grip pulldown', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-pulldown?model=m' },
       { name: 'Low row', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-seated-cable-row?model=m' },
-      { name: '⚑ Squat variation', target: '6–8, 8–10, 10–12', sets: 3, cue: 'chest up, knees track over toes, sit back, full depth — GET FORM CHECKED', link: 'https://musclewiki.com/exercise/barbell-squat?model=m' },
-      { name: 'Hip thrust', target: '3 × 10–12', sets: 3, cue: "upper back on bench, drive through heels, squeeze glutes hard at the top, chin tucked, don't overarch the lower back", link: 'https://musclewiki.com/exercise/barbell-hip-thrust?model=m' },
-      { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3, link: 'https://musclewiki.com/exercise/machine-lying-leg-curl?model=m' },
+      { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3, cue: 'light isolation — keep legs fresh for Sunday futsal', link: 'https://musclewiki.com/exercise/machine-lying-leg-curl?model=m' },
       { name: 'Seated calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause at the top; seated hits the lower calf (soleus)', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'Hammer curls', target: 'to failure', sets: 3, tag: 'superset', cue: 'superset with tricep dips — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m' },
       { name: 'Tricep dips', target: 'to failure', sets: 3, tag: 'superset', link: 'https://musclewiki.com/exercise/dips?model=m' },
@@ -80,10 +80,10 @@ export const DEFAULT_WORKOUTS = {
 
 // Metadata for each activity that can sit on a day.
 export const ACTIVITY_META = {
-  monday: { type: 'strength', label: 'Strength — Full body', pill: 'upper-biased', letter: 'S' },
-  wednesday: { type: 'strength', label: 'Strength — Full body', pill: 'heaviest legs', letter: 'S' },
-  friday: { type: 'strength', label: 'Strength — Full body', pill: '', letter: 'S' },
-  futsal: { type: 'futsal', label: 'Futsal 9pm', pill: '', letter: 'F' },
+  monday: { type: 'strength', label: 'Strength — Full body', pill: 'heavy legs', letter: 'S' },
+  wednesday: { type: 'strength', label: 'Strength — Full body', pill: 'moderate legs', letter: 'S' },
+  friday: { type: 'strength', label: 'Strength — Full body', pill: 'light legs', letter: 'S' },
+  futsal: { type: 'futsal', label: 'Futsal', pill: 'optional', letter: 'F' },
   rest: { type: 'rest', label: 'Light jog or rest', pill: '', letter: 'J' },
   recovery: { type: 'recovery', label: 'Active recovery / walk', pill: 'protect this', letter: 'W' },
 };
