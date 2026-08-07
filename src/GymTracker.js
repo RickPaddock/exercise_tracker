@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight, GripVertical, ArrowUp, ArrowDown, Pencil, Download, Upload, ExternalLink, Scale } from 'lucide-react';
+import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight, GripVertical, ArrowUp, ArrowDown, Pencil, Download, Upload, ExternalLink, Scale, StickyNote } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -114,6 +114,15 @@ const GymLog = () => {
   };
   const toggleDone = (dateKey) => {
     setLog((prev) => ({ ...prev, [dateKey]: { ...(prev[dateKey] || {}), _done: !(prev[dateKey] && prev[dateKey]._done) } }));
+  };
+  const getDayNote = (dateKey) => (log[dateKey] && log[dateKey]._note) || '';
+  const setDayNote = (dateKey, value) => {
+    setLog((prev) => {
+      const day = { ...(prev[dateKey] || {}) };
+      if (value) day._note = value;
+      else delete day._note;
+      return { ...prev, [dateKey]: day };
+    });
   };
   const getSwap = (dateKey, exName) =>
     (log[dateKey] && log[dateKey]._swaps && log[dateKey]._swaps[exName]) || '';
@@ -510,6 +519,21 @@ const GymLog = () => {
                         {done && <Check className="w-4 h-4 sm:w-5 sm:h-5" />}
                       </button>
                     )}
+                  </div>
+
+                  <div className="px-3 sm:px-4 pb-3 flex items-center gap-2">
+                    <StickyNote className={`w-3.5 h-3.5 ${theme.textMuted} shrink-0`} />
+                    <input
+                      type="text"
+                      value={getDayNote(dateKey)}
+                      onChange={(e) => setDayNote(dateKey, e.target.value)}
+                      placeholder="Day note — skipped, off-plan, did your own thing?"
+                      className={`flex-1 min-w-0 px-2 py-1 rounded-md border text-xs focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                        getDayNote(dateKey)
+                          ? isDarkMode ? 'bg-amber-900/40 border-amber-700 text-amber-100' : 'bg-amber-50 border-amber-300 text-amber-900'
+                          : theme.input
+                      }`}
+                    />
                   </div>
 
                   {isStrength && isOpen && (
