@@ -215,7 +215,7 @@ const GymProgress = () => {
               </table>
               <div className={`mt-3 text-xs ${theme.textMuted} flex flex-wrap gap-x-4 gap-y-1`}>
                 <span><span className="inline-block w-3 h-3 rounded-sm bg-green-500 align-middle mr-1" />done / logged</span>
-                <span>S = strength · F = futsal · J = jog/rest · W = walk/recovery</span>
+                <span>S = strength · · = open day</span>
                 <span className="inline-flex items-center gap-1"><Trash2 className="w-3 h-3" /> delete a week's data</span>
               </div>
             </div>

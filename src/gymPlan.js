@@ -29,7 +29,7 @@ export const toKey = (d) =>
 export const DEFAULT_WORKOUTS = {
   monday: {
     title: 'Full Body (heavy legs)',
-    note: 'Heavy leg day (squat + hip thrust moved here). If your legs are still heavy from Sunday futsal, drop the squat/leg-press load or reps — scheduling, not failure.',
+    note: 'Heavy leg day (squat + hip thrust moved here). If your legs feel beaten up, drop the squat/leg-press load or reps — scheduling, not failure.',
     exercises: [
       { name: 'Incline chest press', target: '2 × 6–8', sets: 2, cue: 'elbows ~45°, control down, press up', link: 'https://musclewiki.com/exercise/dumbbell-incline-bench-press?model=m' },
       { name: 'Cable fly', target: '2 × 10–12', sets: 2, cue: 'slight bend in elbow, squeeze chest', link: 'https://musclewiki.com/exercise/cable-pec-fly?model=m' },
@@ -69,7 +69,7 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Seated lateral raise', target: '2 × 10–12', sets: 2, link: 'https://musclewiki.com/exercise/dumbbell-seated-single-arm-full-lateral-raise?model=m' },
       { name: 'Close-grip pulldown', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-pulldown?model=m' },
       { name: 'Low row', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-seated-cable-row?model=m' },
-      { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3, cue: 'light isolation — keep legs fresh for Sunday futsal', link: 'https://musclewiki.com/exercise/machine-lying-leg-curl?model=m' },
+      { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3, cue: 'light isolation — keep it controlled', link: 'https://musclewiki.com/exercise/machine-lying-leg-curl?model=m' },
       { name: 'Seated calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause at the top; seated hits the lower calf (soleus)', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'Hammer curls', target: 'to failure', sets: 3, tag: 'superset', cue: 'superset with tricep dips — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m' },
       { name: 'Tricep dips', target: 'to failure', sets: 3, tag: 'superset', link: 'https://musclewiki.com/exercise/dips?model=m' },
@@ -83,21 +83,22 @@ export const ACTIVITY_META = {
   monday: { type: 'strength', label: 'Strength — Full body', pill: 'heavy legs', letter: 'S' },
   wednesday: { type: 'strength', label: 'Strength — Full body', pill: 'moderate legs', letter: 'S' },
   friday: { type: 'strength', label: 'Strength — Full body', pill: 'light legs', letter: 'S' },
-  futsal: { type: 'futsal', label: 'Futsal', pill: 'optional', letter: 'F' },
-  rest: { type: 'rest', label: 'Light jog or rest', pill: '', letter: 'J' },
-  recovery: { type: 'recovery', label: 'Active recovery / walk', pill: 'protect this', letter: 'W' },
+  // Non-workout days are left blank — add a day note if you do something (run, padel, etc.).
+  rest: { type: 'rest', label: 'Rest / your own thing', pill: '', letter: '·' },
+  // Kept for backwards-compat with older saved plans; resolve to a plain rest day.
+  futsal: { type: 'rest', label: 'Rest / your own thing', pill: '', letter: '·' },
+  recovery: { type: 'rest', label: 'Rest / your own thing', pill: '', letter: '·' },
 };
 
-// Default week, Mon → Sun. Each slot has a stable id so drag reordering is robust
-// even though "futsal" appears twice.
+// Default week, Mon → Sun. Workouts on Mon/Wed/Fri; other days left open.
 export const DEFAULT_WEEK = [
   { id: 'd1', activityId: 'monday' },
   { id: 'd2', activityId: 'rest' },
   { id: 'd3', activityId: 'wednesday' },
-  { id: 'd4', activityId: 'futsal' },
+  { id: 'd4', activityId: 'rest' },
   { id: 'd5', activityId: 'friday' },
-  { id: 'd6', activityId: 'recovery' },
-  { id: 'd7', activityId: 'futsal' },
+  { id: 'd6', activityId: 'rest' },
+  { id: 'd7', activityId: 'rest' },
 ];
 
 const clone = (obj) => JSON.parse(JSON.stringify(obj));

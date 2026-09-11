@@ -99,7 +99,7 @@ export const NutritionPage = () => (
 
       <div className="meal-card">
         <div className="meal-title">Peanut Butter Overnight Oats <span className="protein-badge">~45g</span></div>
-        <span className="day-tag">Futsal / jog mornings — carbs, grab-and-go</span>
+        <span className="day-tag">Cardio / active mornings — carbs, grab-and-go</span>
         <ul className="meal-items">
           <li>60g oats + ½ cup milk + 120g Kri Kri yogurt</li>
           <li>1 scoop whey (optional but recommended)</li>
@@ -217,7 +217,7 @@ export const NutritionPage = () => (
       <div className="section-title">Allowed Snacks</div>
       <ul className="meal-items">
         <li><strong>2 boiled eggs</strong> (+12g) — boil 10 Sunday, keep in shell</li>
-        <li><strong>200g cottage cheese</strong> (+24g) — ideal post-futsal / before bed (slow casein)</li>
+        <li><strong>200g cottage cheese</strong> (+24g) — ideal after evening sport / before bed (slow casein)</li>
         <li><strong>Kri Kri yogurt + berries</strong> (+10g) — if genuinely hungry</li>
         <li><strong>Whey shake</strong> (+28g) — fastest way to top up the daily target</li>
       </ul>
@@ -295,28 +295,28 @@ export const NutritionPage = () => (
 const GymOverview = () => (
   <div className="rick-plan">
     <PlanStyles />
-    <h1>Training — 3 Strength + 2 Futsal</h1>
-    <p className="subtitle">Full-body ×3 · Futsal Thu &amp; Sun · Goal: all-round strength, legs, posture, visible muscle</p>
+    <h1>Training — 3 Full-Body Sessions</h1>
+    <p className="subtitle">Full-body ×3 · Goal: all-round strength, legs, posture, visible muscle</p>
 
     {/* WEEK */}
     <div className="section">
       <div className="section-title">Your Week</div>
       <div className="week-grid">
-        <div className="week-day">Mon</div><div className="week-act">Strength — Full body <span className="pill">upper-biased</span></div>
-        <div className="week-day">Tue</div><div className="week-act">Light jog or rest</div>
-        <div className="week-day">Wed</div><div className="week-act">Strength — Full body <span className="pill">heaviest legs</span></div>
-        <div className="week-day">Thu</div><div className="week-act">Futsal (optional)</div>
-        <div className="week-day">Fri</div><div className="week-act">Strength — Full body</div>
-        <div className="week-day">Sat</div><div className="week-act">Active recovery / walk <span className="pill">protect this</span></div>
-        <div className="week-day">Sun</div><div className="week-act">Futsal (optional)</div>
+        <div className="week-day">Mon</div><div className="week-act">Strength — Full body <span className="pill">heavy legs</span></div>
+        <div className="week-day">Tue</div><div className="week-act">—</div>
+        <div className="week-day">Wed</div><div className="week-act">Strength — Full body <span className="pill">moderate legs</span></div>
+        <div className="week-day">Thu</div><div className="week-act">—</div>
+        <div className="week-day">Fri</div><div className="week-act">Strength — Full body <span className="pill">light legs</span></div>
+        <div className="week-day">Sat</div><div className="week-act">—</div>
+        <div className="week-day">Sun</div><div className="week-act">—</div>
       </div>
-      <div className="warn-box"><p><strong>Heaviest squat/RDL on Wednesday</strong> — furthest from both futsal nights so your legs are fresh to play and recovered after. Keep Monday more upper-body if legs feel beaten from Sunday futsal.</p></div>
+      <div className="warn-box"><p><strong>Legs taper across the week</strong> — heavy Monday, moderate Wednesday, light Friday. The open days are yours: rest, or note whatever you do (run, padel, walk) on that day in the log.</p></div>
     </div>
 
     {/* MONDAY */}
     <div className="section">
       <div className="section-title">Monday — Full Body (heavy legs)</div>
-      <p className="subtitle" style={{ marginTop: '-4px', marginBottom: '10px' }}>Heavy leg day (squat + hip thrust moved here). If your legs are still heavy from Sunday futsal, drop the squat/leg-press load or reps — scheduling, not failure.</p>
+      <p className="subtitle" style={{ marginTop: '-4px', marginBottom: '10px' }}>Heavy leg day (squat + hip thrust moved here). If your legs feel beaten up, drop the squat/leg-press load or reps — scheduling, not failure.</p>
       <table className="workout">
         <tbody>
           <tr><th>Exercise</th><th>Sets×Reps</th></tr>
@@ -366,7 +366,7 @@ const GymOverview = () => (
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-seated-single-arm-full-lateral-raise?model=m">Seated lateral raise</ExLink></td><td className="sets">2 × 10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Close-grip pulldown</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-cable-row?model=m">Low row</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-lying-leg-curl?model=m">Lying hamstring curl</ExLink><div className="cue">light isolation — keep legs fresh for Sunday futsal</div></td><td className="sets">6–8, 8–10, 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-lying-leg-curl?model=m">Lying hamstring curl</ExLink><div className="cue">light isolation — keep it controlled</div></td><td className="sets">6–8, 8–10, 10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Seated calf raise</ExLink><div className="cue">full stretch at the bottom, pause at the top; seated hits the soleus</div></td><td className="sets">3 × 12–15</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m">hammer curls</ExLink> + <ExLink href="https://musclewiki.com/exercise/dips?model=m">tricep dips</ExLink></td><td className="sets">to failure</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/hanging-knee-raises?model=m">Hanging knee raise</ExLink><div className="cue">hang from a pull-up bar, lift knees to chest with control, no swinging</div></td><td className="sets">3 × 10–12</td></tr>
@@ -382,7 +382,7 @@ const GymOverview = () => (
         <li><strong>Progressive overload weekly.</strong> Add a little weight or 1 rep each week. This is THE driver of growth. Log it.</li>
         <li><strong>Control the weight.</strong> Slow on the way down (2–3 sec), full range of motion. Half-reps build half-muscle.</li>
         <li><strong>10k steps daily.</strong> Drives the fat loss without touching recovery.</li>
-        <li><strong>Sunday-to-Monday is your tightest turnaround.</strong> Sunday futsal → Monday strength. Keep Monday upper-biased.</li>
+        <li><strong>Legs taper across the week.</strong> Heavy Monday → moderate Wednesday → light Friday, so legs are never smashed two sessions running.</li>
       </ul>
       <div className="warn-box"><p><strong>⚑ Get these two checked in person</strong> (gym staff or experienced lifter): <strong>Romanian deadlift</strong> and <strong>squat</strong>. These are the only two where bad form risks real injury. The machines are low-risk — one good Jeff Nippard / Athlean-X video each is enough.</p></div>
     </div>
@@ -396,7 +396,7 @@ const GymOverview = () => (
         <li><strong>Shoulders:</strong> press + lateral raises</li>
         <li><strong>Legs:</strong> leg press, extension, ham curl, RDL, squat — quads, hams, glutes all hit</li>
         <li><strong>Arms:</strong> curls + tricep work supersetted daily</li>
-        <li><strong>Conditioning:</strong> covered by 2× futsal — no extra cardio sessions needed</li>
+        <li><strong>Conditioning:</strong> your call on the open days — walking, running, padel, whatever you fancy</li>
       </ul>
     </div>
   </div>
