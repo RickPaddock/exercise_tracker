@@ -43,8 +43,6 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'Bicep curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with tricep pushdown — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-curl?model=m' },
       { name: 'Tricep pushdown', target: '3 × 10–12', sets: 3, tag: 'superset', link: 'https://barbend.com/triceps-pushdown/' },
-      { name: 'Weighted V-up', target: '3 × 12–15', sets: 3, cue: 'lie flat holding a plate overhead, raise arms and legs together to meet over your midsection, lower with control', link: 'https://musclewiki.com/exercise/v-up?model=m' },
-      { name: 'Ab machine weighted crunch', target: '3 × 12–15', sets: 3, cue: 'set a weight where the last 2–3 reps are hard; curl your torso by contracting the abs, controlled return, no jerking', link: 'https://musclewiki.com/exercise/machine-crunch?model=m' },
     ],
   },
   wednesday: {
@@ -60,6 +58,7 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Standing calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause and squeeze at the top, no bouncing', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'DB curl', target: '3 × 10–12', sets: 3, tag: 'superset', cue: 'superset with skullcrushers — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-curl?model=m' },
       { name: 'Skullcrushers', target: '3 × 10–12', sets: 3, tag: 'superset', link: 'https://musclewiki.com/exercise/dumbbell-skullcrusher?model=m' },
+      { name: 'Ab machine weighted crunch', target: '3 × 12–15', sets: 3, cue: 'set a weight where the last 2–3 reps are hard; curl your torso by contracting the abs, controlled return, no jerking', link: 'https://musclewiki.com/exercise/machine-crunch?model=m' },
     ],
   },
   friday: {

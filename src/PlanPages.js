@@ -331,8 +331,6 @@ const GymOverview = () => (
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-extension?model=m">Leg extension</ExLink><div className="cue">lighter — legs already worked</div></td><td className="sets">1×8–10, 1×10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Standing calf raise</ExLink><div className="cue">full stretch at the bottom, pause and squeeze at the top, no bouncing</div></td><td className="sets">3 × 12–15</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-curl?model=m">bicep curl</ExLink> + <ExLink href="https://barbend.com/triceps-pushdown/">tricep pushdown</ExLink></td><td className="sets">3 × 10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/v-up?model=m">Weighted V-up</ExLink><div className="cue">plate held overhead, raise arms and legs together to meet over midsection, lower with control</div></td><td className="sets">3 × 12–15</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-crunch?model=m">Ab machine weighted crunch</ExLink><div className="cue">weight where the last 2–3 reps are hard; curl the torso by contracting abs, controlled return, no jerking</div></td><td className="sets">3 × 12–15</td></tr>
         </tbody>
       </table>
     </div>
@@ -352,6 +350,7 @@ const GymOverview = () => (
           <tr><td className="ex">⚑ <ExLink href="https://musclewiki.com/exercise/barbell-romanian-deadlift?model=m">Romanian deadlift</ExLink><div className="cue">moderate load — save heavy legs for Monday, keep controlled (flat back — GET FORM CHECKED)</div></td><td className="sets">2 × 6–8</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Standing calf raise</ExLink><div className="cue">full stretch at the bottom, pause and squeeze at the top, no bouncing</div></td><td className="sets">3 × 12–15</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-curl?model=m">DB curl</ExLink> + <ExLink href="https://musclewiki.com/exercise/dumbbell-skullcrusher?model=m">skullcrushers</ExLink></td><td className="sets">3 × 10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-crunch?model=m">Ab machine weighted crunch</ExLink><div className="cue">weight where the last 2–3 reps are hard; curl the torso by contracting abs, controlled return, no jerking</div></td><td className="sets">3 × 12–15</td></tr>
         </tbody>
       </table>
     </div>
