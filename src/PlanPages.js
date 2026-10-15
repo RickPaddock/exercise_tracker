@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GymLog from './GymTracker';
 import GymProgress from './GymProgress';
+import NutritionTracker from './NutritionTracker';
 
 // Styles adapted from Rick's Nutrition & Training plan, scoped under `.rick-plan`
 // so they never clash with the Igor tracker (which uses Tailwind utilities).
@@ -76,7 +77,7 @@ const COOK_STEPS = [
 ];
 
 // ============ NUTRITION PAGE ============
-export const NutritionPage = () => (
+const NutritionPlan = () => (
   <div className="rick-plan">
     <PlanStyles />
     <h1>Nutrition — Sunday Batch Cook</h1>
@@ -449,6 +450,49 @@ export const GymPage = () => {
       {sub === 'log' && <GymLog />}
       {sub === 'progress' && <GymProgress />}
       {sub === 'overview' && <GymOverview />}
+    </div>
+  );
+};
+
+// ============ NUTRITION PAGE (Tracker + Plan subtabs) ============
+const NUTRITION_SUBTABS = [
+  { id: 'track', label: '📊 Daily Intake' },
+  { id: 'plan', label: '🍽️ Plan' },
+];
+
+export const NutritionPage = () => {
+  const [sub, setSub] = useState('track');
+
+  return (
+    <div>
+      <div style={{ display: 'flex', gap: '6px', padding: '8px 10px', background: '#0b1220' }}>
+        {NUTRITION_SUBTABS.map((t) => {
+          const isActive = sub === t.id;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setSub(t.id)}
+              style={{
+                flex: 1,
+                padding: '9px 10px',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                background: isActive ? '#2d6a4f' : '#1f2937',
+                color: isActive ? '#ffffff' : '#9ca3af',
+              }}
+            >
+              {t.label}
+            </button>
+          );
+        })}
+      </div>
+      {sub === 'track' && <NutritionTracker />}
+      {sub === 'plan' && <NutritionPlan />}
     </div>
   );
 };
