@@ -14,6 +14,7 @@ const FOOD_GROUPS = [
       { key: 'yogurt', name: 'Kri Kri 0% yogurt', unit: '200g', protein: 20, kcal: 110 },
       { key: 'cottage', name: 'Cottage cheese', unit: '200g', protein: 24, kcal: 160 },
       { key: 'whey', name: 'Whey shake', unit: '1 scoop', protein: 24, kcal: 120 },
+      { key: 'proteindrink', name: 'High protein drink', unit: '1 bottle 330ml', protein: 35, kcal: 200 },
     ],
   },
   {
