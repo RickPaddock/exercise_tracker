@@ -105,6 +105,23 @@ export default function NutritionTracker() {
   const dateLabel = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   const anyLogged = Object.keys(items).length > 0 || customs.length > 0;
 
+  // 7-day average (only counting days that actually have entries, so missed days don't drag it to 0).
+  const dayTotals = (dk) => {
+    const d = normalizeDay(log[dk]);
+    let P = 0; let K = 0;
+    Object.keys(d.items).forEach((k) => { const f = FOOD_BY_KEY[k]; if (f) { P += f.protein * d.items[k]; K += f.kcal * d.items[k]; } });
+    d.custom.forEach((c) => { P += parseFloat(c.protein) || 0; K += parseFloat(c.kcal) || 0; });
+    return { P, K, has: Object.keys(d.items).length > 0 || d.custom.length > 0 };
+  };
+  let wkP = 0; let wkK = 0; let wkN = 0;
+  for (let i = 0; i < 7; i += 1) {
+    const d = new Date(date); d.setDate(d.getDate() - i);
+    const t = dayTotals(toIso(d));
+    if (t.has) { wkP += t.P; wkK += t.K; wkN += 1; }
+  }
+  const avgP = wkN ? Math.round(wkP / wkN) : 0;
+  const avgK = wkN ? Math.round(wkK / wkN) : 0;
+
   const Bar = ({ value, target, unit, over }) => {
     const pct = target > 0 ? Math.min(100, (value / target) * 100) : 0;
     const isOver = over && value > target;
@@ -173,6 +190,28 @@ export default function NutritionTracker() {
               <div><div className="text-xs text-gray-500 mb-0.5">Protein</div><Bar value={totalP} target={tP} unit="g" /></div>
               <div><div className="text-xs text-gray-500 mb-0.5">Calories</div><Bar value={totalK} target={tK} unit="" over /></div>
             </>
+          )}
+        </div>
+
+        {/* 7-day average */}
+        <div className={`${card} p-4 mb-4`}>
+          <div className="flex items-baseline justify-between mb-2">
+            <span className="text-xs font-bold uppercase tracking-wide text-gray-500">7-day average</span>
+            <span className="text-xs text-gray-400">{wkN > 0 ? `${wkN} day${wkN === 1 ? '' : 's'} logged` : 'no days logged'}</span>
+          </div>
+          {wkN === 0 ? (
+            <div className="text-sm text-gray-400">Log a few days and your averages show here — that's what to judge progress on, not any single day.</div>
+          ) : (
+            <div className="flex gap-6">
+              <div>
+                <div className="text-2xl font-bold text-gray-900">{avgP}<span className="text-base font-normal text-gray-400">g</span></div>
+                <div className={`text-xs font-semibold ${avgP >= tP * 0.95 ? 'text-green-600' : 'text-amber-600'}`}>protein/day{tP ? ` · target ${tP}g` : ''}</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-gray-900">{avgK}</div>
+                <div className={`text-xs font-semibold ${tK && avgK > tK ? 'text-red-600' : 'text-green-600'}`}>kcal/day{tK ? ` · target ${tK}` : ''}</div>
+              </div>
+            </div>
           )}
         </div>
 
