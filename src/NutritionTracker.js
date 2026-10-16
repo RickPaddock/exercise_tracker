@@ -13,7 +13,7 @@ const FOOD_GROUPS = [
       { key: 'salmon', name: 'Salmon', unit: 'fillet ~150g', protein: 42, kcal: 300 },
       { key: 'yogurt', name: 'Kri Kri 0% yogurt', unit: '200g', protein: 20, kcal: 110 },
       { key: 'cottage', name: 'Cottage cheese', unit: '200g', protein: 24, kcal: 160 },
-      { key: 'whey', name: 'Whey shake', unit: '1 scoop', protein: 24, kcal: 120 },
+      { key: 'whey', name: 'Whey shake (with milk)', unit: '1 scoop + 250ml', protein: 32, kcal: 245 },
       { key: 'proteindrink', name: 'Lidl protein drink', unit: '1 bottle 330ml', protein: 35, kcal: 202 },
     ],
   },
