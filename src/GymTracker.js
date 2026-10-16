@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight, GripVertical, ArrowUp, ArrowDown, Pencil, Download, Upload, ExternalLink, Scale, StickyNote } from 'lucide-react';
+import { Calendar, Dumbbell, Check, Moon, Sun, ChevronDown, ChevronRight, GripVertical, ArrowUp, ArrowDown, Pencil, Download, Upload, ExternalLink, Scale, StickyNote, Ruler } from 'lucide-react';
 import {
   DndContext,
   closestCenter,
@@ -64,6 +64,9 @@ const GymLog = () => {
   const [bodyweight, setBodyweight] = useState(() => {
     try { return JSON.parse(localStorage.getItem('gym_bodyweight')) || {}; } catch (e) { return {}; }
   });
+  const [waist, setWaist] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('gym_waist')) || {}; } catch (e) { return {}; }
+  });
   const [editMode, setEditMode] = useState(false);
 
   const computeOffset = (start) => {
@@ -78,6 +81,7 @@ const GymLog = () => {
   useEffect(() => { try { localStorage.setItem('gym_log', JSON.stringify(log)); } catch (e) {} }, [log]);
   useEffect(() => { try { localStorage.setItem('gym_isDarkMode', JSON.stringify(isDarkMode)); } catch (e) {} }, [isDarkMode]);
   useEffect(() => { try { localStorage.setItem('gym_bodyweight', JSON.stringify(bodyweight)); } catch (e) {} }, [bodyweight]);
+  useEffect(() => { try { localStorage.setItem('gym_waist', JSON.stringify(waist)); } catch (e) {} }, [waist]);
 
   const persistPlan = (next) => { setPlan(next); savePlan(next); };
   const persistWeekPlans = (next) => { setWeekPlans(next); saveWeekPlans(next); };
@@ -202,7 +206,7 @@ const GymLog = () => {
 
   // ---- export / import ----
   const exportData = () => {
-    const payload = { version: 4, exportedAt: new Date().toISOString(), startDate, plan, weekPlans, bodyweight, log };
+    const payload = { version: 5, exportedAt: new Date().toISOString(), startDate, plan, weekPlans, bodyweight, waist, log };
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -225,6 +229,7 @@ const GymLog = () => {
         if (data.plan && Array.isArray(data.plan.week) && data.plan.workouts) persistPlan(data.plan);
         if (data.weekPlans && typeof data.weekPlans === 'object') persistWeekPlans(data.weekPlans);
         if (data.bodyweight && typeof data.bodyweight === 'object') setBodyweight(data.bodyweight);
+        if (data.waist && typeof data.waist === 'object') setWaist(data.waist);
         setWeekOffset(computeOffset(data.startDate || startDate));
         window.alert('Workout log imported.');
       } catch (err) {
@@ -244,6 +249,7 @@ const GymLog = () => {
       persistPlan(defaultPlan());
       persistWeekPlans({});
       setBodyweight({});
+      setWaist({});
       try {
         localStorage.removeItem('gym_startDate');
         localStorage.removeItem('gym_log');
@@ -251,6 +257,7 @@ const GymLog = () => {
         localStorage.removeItem('gym_plan');
         localStorage.removeItem('gym_weekPlans');
         localStorage.removeItem('gym_bodyweight');
+        localStorage.removeItem('gym_waist');
       } catch (e) {}
     }
   };
@@ -276,6 +283,14 @@ const GymLog = () => {
     .pop();
   const bwPrev = bwPrevKey ? parseFloat(bodyweight[bwPrevKey]) : null;
   const bwDelta = Number.isFinite(bwCurrent) && bwPrev !== null ? bwCurrent - bwPrev : null;
+
+  const waistPrevKey = Object.keys(waist)
+    .filter((k) => k < weekKey && parseFloat(waist[k]) >= 0 && waist[k] !== '')
+    .sort()
+    .pop();
+  const waistPrev = waistPrevKey ? parseFloat(waist[waistPrevKey]) : null;
+  const waistCurrent = parseFloat(waist[weekKey]);
+  const waistDelta = Number.isFinite(waistCurrent) && waistPrev !== null ? waistCurrent - waistPrev : null;
 
   const pillEl = (txt) =>
     txt ? <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-green-900 text-green-200">{txt}</span> : null;
@@ -352,27 +367,44 @@ const GymLog = () => {
 
         <WeekNav />
 
-        {/* Weekly bodyweight */}
-        <div className={`rounded-xl border ${theme.border} ${theme.cardBg} p-3 sm:p-4 mb-4 flex items-center gap-3 flex-wrap`}>
-          <div className="flex items-center gap-2">
-            <Scale className="w-4 h-4" />
-            <span className="text-sm font-medium">Bodyweight</span>
-          </div>
-          <div className="flex items-center gap-2">
+        {/* Weekly check-in: bodyweight + waist */}
+        <div className={`rounded-xl border ${theme.border} ${theme.cardBg} p-3 sm:p-4 mb-4 space-y-2.5`}>
+          <div className={`text-xs font-bold uppercase tracking-wide ${theme.textMuted}`}>Weekly check-in · week of {days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2 w-28"><Scale className="w-4 h-4" /><span className="text-sm font-medium">Bodyweight</span></div>
             <input
               type="number" inputMode="decimal" step="0.1" placeholder="kg"
               value={bodyweight[weekKey] || ''}
               onChange={(e) => setBodyweight((prev) => ({ ...prev, [weekKey]: e.target.value }))}
               className={`w-24 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
             />
-            <span className={`text-xs ${theme.textMuted}`}>kg · week of {days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+            <span className={`text-xs ${theme.textMuted}`}>kg</span>
+            {bwDelta !== null && Math.abs(bwDelta) > 0.001 && (
+              <span className={`text-xs font-semibold ${bwDelta < 0 ? 'text-green-500' : 'text-amber-500'}`}>
+                {bwDelta > 0 ? '▲' : '▼'} {Math.abs(bwDelta).toFixed(1)}{' '}
+                <span className={`font-normal ${theme.textMuted}`}>vs {new Date(bwPrevKey).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+              </span>
+            )}
           </div>
-          {bwDelta !== null && Math.abs(bwDelta) > 0.001 && (
-            <span className={`text-xs font-semibold ${bwDelta < 0 ? 'text-green-500' : 'text-amber-500'}`}>
-              {bwDelta > 0 ? '▲' : '▼'} {Math.abs(bwDelta).toFixed(1)} kg{' '}
-              <span className={`font-normal ${theme.textMuted}`}>vs {new Date(bwPrevKey).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-            </span>
-          )}
+
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-2 w-28"><Ruler className="w-4 h-4" /><span className="text-sm font-medium">Waist</span></div>
+            <input
+              type="number" inputMode="decimal" step="0.1" placeholder="cm"
+              value={waist[weekKey] || ''}
+              onChange={(e) => setWaist((prev) => ({ ...prev, [weekKey]: e.target.value }))}
+              className={`w-24 px-2 py-1 rounded-md ${theme.input} border text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent`}
+            />
+            <span className={`text-xs ${theme.textMuted}`}>cm</span>
+            {waistDelta !== null && Math.abs(waistDelta) > 0.001 && (
+              <span className={`text-xs font-semibold ${waistDelta < 0 ? 'text-green-500' : 'text-amber-500'}`}>
+                {waistDelta > 0 ? '▲' : '▼'} {Math.abs(waistDelta).toFixed(1)}{' '}
+                <span className={`font-normal ${theme.textMuted}`}>vs {new Date(waistPrevKey).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+              </span>
+            )}
+          </div>
+          <div className={`text-[11px] ${theme.textMuted}`}>Waist: measure at the navel, first thing in the morning, relaxed exhale — same way each week.</div>
         </div>
 
         {editMode ? (

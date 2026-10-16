@@ -65,6 +65,15 @@ export default function NutritionTracker() {
   });
   const [custom, setCustom] = useState({ name: '', protein: '', kcal: '' });
   const [showTargets, setShowTargets] = useState(false);
+  const [navH, setNavH] = useState(64);
+
+  // Measure the app's top nav so the totals card can stick just below it.
+  useEffect(() => {
+    const measure = () => { const n = document.querySelector('nav'); if (n) setNavH(Math.round(n.getBoundingClientRect().height)); };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, []);
 
   useEffect(() => { try { localStorage.setItem('nutri_log', JSON.stringify(log)); } catch (e) {} }, [log]);
   useEffect(() => { try { localStorage.setItem('nutri_targets', JSON.stringify(targets)); } catch (e) {} }, [targets]);
@@ -171,7 +180,7 @@ export default function NutritionTracker() {
         </div>
 
         {/* Totals */}
-        <div className={`${card} p-4 mb-4 space-y-3`}>
+        <div className={`${card} p-4 mb-4 space-y-3 shadow-md`} style={{ position: 'sticky', top: navH, zIndex: 30 }}>
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wide text-gray-500">Today's totals</span>
             <button type="button" onClick={() => setShowTargets((s) => !s)} className="text-xs text-gray-500 underline">{showTargets ? 'done' : 'edit targets'}</button>
