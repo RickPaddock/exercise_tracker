@@ -29,14 +29,14 @@ export const toKey = (d) =>
 export const DEFAULT_WORKOUTS = {
   monday: {
     title: 'Full Body (heavy legs)',
-    note: 'Heavy leg day (squat + hip thrust moved here). If your legs feel beaten up, drop the squat/leg-press load or reps — scheduling, not failure.',
+    note: 'Heavy leg day (trap bar deadlift + hip thrust). If your legs feel beaten up, drop the trap bar/leg-press load or reps — scheduling, not failure.',
     exercises: [
       { name: 'Incline chest press', target: '2 × 6–8', sets: 2, cue: 'elbows ~45°, control down, press up', link: 'https://musclewiki.com/exercise/dumbbell-incline-bench-press?model=m' },
       { name: 'Cable fly', target: '2 × 10–12', sets: 2, cue: 'slight bend in elbow, squeeze chest', link: 'https://musclewiki.com/exercise/cable-pec-fly?model=m' },
       { name: 'Chest-supported row', target: '1×6–8, 1×8–10', sets: 2, cue: 'pull to ribs, shoulder blades back', link: 'https://wellfitinsider.com/workout-tips/chest-supported-row/' },
       { name: 'Lat pulldown', target: '1×6–8, 1×8–10', sets: 2, cue: 'chest up, drive elbows down', link: 'https://musclewiki.com/exercise/machine-pulldown?model=m' },
       { name: 'Reverse pec-dec fly', target: '3 × 12–15', sets: 3, cue: 'chest against pad, lead with elbows, squeeze shoulder blades together, controlled — rear delts + posture (no machine? bent-over DB reverse flyes)', link: 'https://barbend.com/reverse-pec-deck/' },
-      { name: '⚑ Squat variation', target: '6–8, 8–10, 10–12', sets: 3, cue: 'the main heavy lift — chest up, knees track over toes, sit back, full depth — GET FORM CHECKED', link: 'https://musclewiki.com/exercise/barbell-squat?model=m' },
+      { name: '⚑ Trap bar deadlift', target: '6–8, 8–10, 10–12', sets: 3, cue: 'the main heavy lift — knee-friendly squat/deadlift hybrid; chest up, flat back, push the floor away, stand tall, control the way down — GET FORM CHECKED', link: 'https://youtu.be/dfYIApfWS5o?si=2Znu_--1cZcrSd2X' },
       { name: 'Leg press', target: '2 × 6–8', sets: 2, cue: "feet shoulder-width, don't lock knees hard", link: 'https://musclewiki.com/exercise/machine-leg-press?model=m' },
       { name: 'Hip thrust', target: '3 × 10–12', sets: 3, cue: "upper back on bench, drive through heels, squeeze glutes hard at the top, chin tucked, don't overarch the lower back", link: 'https://musclewiki.com/exercise/barbell-hip-thrust?model=m' },
       { name: 'Leg extension', target: '1×8–10, 1×10–12', sets: 2, cue: 'lighter — legs are already worked', link: 'https://musclewiki.com/exercise/machine-leg-extension?model=m' },
@@ -68,6 +68,7 @@ export const DEFAULT_WORKOUTS = {
       { name: 'Seated lateral raise', target: '2 × 10–12', sets: 2, link: 'https://musclewiki.com/exercise/dumbbell-seated-single-arm-full-lateral-raise?model=m' },
       { name: 'Close-grip pulldown', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-pulldown?model=m' },
       { name: 'Low row', target: '1×6–8, 1×8–10', sets: 2, link: 'https://musclewiki.com/exercise/machine-seated-cable-row?model=m' },
+      { name: '⚑ Trap bar deadlift', target: '2 × 8–10', sets: 2, cue: 'lighter than Monday — knee-friendly hinge, flat back, stand tall, controlled; keep it crisp, not a grind', link: 'https://youtu.be/dfYIApfWS5o?si=2Znu_--1cZcrSd2X' },
       { name: 'Lying hamstring curl', target: '6–8, 8–10, 10–12', sets: 3, cue: 'light isolation — keep it controlled', link: 'https://musclewiki.com/exercise/machine-lying-leg-curl?model=m' },
       { name: 'Seated calf raise', target: '3 × 12–15', sets: 3, cue: 'full stretch at the bottom, pause at the top; seated hits the lower calf (soleus)', link: 'https://musclewiki.com/exercises/calves' },
       { name: 'Hammer curls', target: 'to failure', sets: 3, tag: 'superset', cue: 'superset with tricep dips — alternate, minimal rest', link: 'https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m' },
