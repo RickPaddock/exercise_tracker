@@ -314,6 +314,18 @@ const GymOverview = () => (
       <div className="warn-box"><p><strong>Legs taper across the week</strong> — heavy Monday, moderate Wednesday, light Friday. The open days are yours: rest, or note whatever you do (run, padel, walk) on that day in the log.</p></div>
     </div>
 
+    {/* 2S2F */}
+    <div className="section">
+      <div className="section-title">How to run the sets — 2s2f</div>
+      <p className="subtitle" style={{ marginTop: '-4px', marginBottom: '10px' }}>Rows marked <strong>2s2f</strong> use this (isolation &amp; machines):</p>
+      <ul className="meal-items">
+        <li><strong>Heavy</strong> — 1 set to failure, then rest <strong>2 min</strong>.</li>
+        <li><strong>−20%</strong> — drop the weight ~20%, go to failure, rest <strong>30 sec</strong>.</li>
+        <li><strong>−20%</strong> — same weight again, to failure.</li>
+      </ul>
+      <div className="warn-box"><p>It's called "2 sets to failure" but it's really <strong>3 working sets</strong>. The big compounds (trap bar deadlift, RDL, hip thrust, leg press) stay <strong>straight sets</strong> — leave 1–2 reps in reserve there; save true failure for the machines where form can't break down dangerously.</p></div>
+    </div>
+
     {/* MONDAY */}
     <div className="section">
       <div className="section-title">Monday — Full Body (heavy legs)</div>
@@ -321,16 +333,16 @@ const GymOverview = () => (
       <table className="workout">
         <tbody>
           <tr><th>Exercise</th><th>Sets×Reps</th></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-incline-bench-press?model=m">Incline chest press</ExLink><div className="cue">elbows ~45°, control down, press up</div></td><td className="sets">2 × 6–8</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/cable-pec-fly?model=m">Cable fly</ExLink><div className="cue">slight bend in elbow, squeeze chest</div></td><td className="sets">2 × 10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://wellfitinsider.com/workout-tips/chest-supported-row/">Chest-supported row</ExLink><div className="cue">pull to ribs, shoulder blades back</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Lat pulldown</ExLink><div className="cue">chest up, drive elbows down</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex"><ExLink href="https://barbend.com/reverse-pec-deck/">Reverse pec-dec fly</ExLink><div className="cue">chest against pad, lead with elbows, squeeze shoulder blades — rear delts + posture (no machine? bent-over DB reverse fly)</div></td><td className="sets">3 × 12–15</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-incline-bench-press?model=m">Incline chest press</ExLink><div className="cue">elbows ~45°, control down, press up</div></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/cable-pec-fly?model=m">Cable fly</ExLink><div className="cue">slight bend in elbow, squeeze chest</div></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://wellfitinsider.com/workout-tips/chest-supported-row/">Chest-supported row</ExLink><div className="cue">pull to ribs, shoulder blades back</div></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Lat pulldown</ExLink><div className="cue">chest up, drive elbows down</div></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://barbend.com/reverse-pec-deck/">Reverse pec-dec fly</ExLink><div className="cue">chest against pad, lead with elbows, squeeze shoulder blades — rear delts + posture (no machine? bent-over DB reverse fly)</div></td><td className="sets">2s2f</td></tr>
           <tr><td className="ex">⚑ <ExLink href="https://youtu.be/dfYIApfWS5o?si=2Znu_--1cZcrSd2X">Trap bar deadlift</ExLink><div className="cue">the main heavy lift — knee-friendly squat/deadlift hybrid; chest up, flat back, push the floor away, stand tall, control the way down — GET FORM CHECKED</div></td><td className="sets">6–8, 8–10, 10–12</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-press?model=m">Leg press</ExLink><div className="cue">feet shoulder-width, don't lock knees hard</div></td><td className="sets">2 × 6–8</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/barbell-hip-thrust?model=m">Hip thrust</ExLink><div className="cue">upper back on bench, drive through heels, squeeze glutes hard at top, chin tucked, don't overarch lower back</div></td><td className="sets">3 × 10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-extension?model=m">Leg extension</ExLink><div className="cue">lighter — legs already worked</div></td><td className="sets">1×8–10, 1×10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Standing calf raise</ExLink><div className="cue">full stretch at the bottom, pause and squeeze at the top, no bouncing</div></td><td className="sets">3 × 12–15</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-leg-extension?model=m">Leg extension</ExLink><div className="cue">lighter — legs already worked</div></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Standing calf raise</ExLink><div className="cue">full stretch at the bottom, pause and squeeze at the top, no bouncing</div></td><td className="sets">2s2f</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-curl?model=m">bicep curl</ExLink> + <ExLink href="https://barbend.com/triceps-pushdown/">tricep pushdown</ExLink></td><td className="sets">3 × 10–12</td></tr>
         </tbody>
       </table>
@@ -342,16 +354,16 @@ const GymOverview = () => (
       <table className="workout">
         <tbody>
           <tr><th>Exercise</th><th>Sets×Reps</th></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/shoulders">Shoulder press</ExLink><div className="cue">don't flare, press slightly forward of head</div></td><td className="sets">2 × 6–8</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-lateral-raise?model=m">Chest-supported lateral raise</ExLink><div className="cue">lead with elbows, pinky high</div></td><td className="sets">2 × 10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-cable-row?model=m">Seated row</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/lats/dumbbells">DB row</ExLink><div className="cue">flat back, pull to hip</div></td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/cable-face-pull?model=m">Face pull</ExLink><div className="cue">pull rope to forehead, elbows high, squeeze shoulder blades — posture priority</div></td><td className="sets">2 × 15</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-leg-curl?model=m">Hamstring curl</ExLink></td><td className="sets">1×8–10, 1×10–12</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/shoulders">Shoulder press</ExLink><div className="cue">don't flare, press slightly forward of head</div></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-lateral-raise?model=m">Chest-supported lateral raise</ExLink><div className="cue">lead with elbows, pinky high</div></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-cable-row?model=m">Seated row</ExLink></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/lats/dumbbells">DB row</ExLink><div className="cue">flat back, pull to hip</div></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/cable-face-pull?model=m">Face pull</ExLink><div className="cue">pull rope to forehead, elbows high, squeeze shoulder blades — posture priority, keep controlled (not to failure)</div></td><td className="sets">2 × 15</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-leg-curl?model=m">Hamstring curl</ExLink></td><td className="sets">2s2f</td></tr>
           <tr><td className="ex">⚑ <ExLink href="https://musclewiki.com/exercise/barbell-romanian-deadlift?model=m">Romanian deadlift</ExLink><div className="cue">moderate load — save heavy legs for Monday, keep controlled (flat back — GET FORM CHECKED)</div></td><td className="sets">2 × 6–8</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Standing calf raise</ExLink><div className="cue">full stretch at the bottom, pause and squeeze at the top, no bouncing</div></td><td className="sets">3 × 12–15</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Standing calf raise</ExLink><div className="cue">full stretch at the bottom, pause and squeeze at the top, no bouncing</div></td><td className="sets">2s2f</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-curl?model=m">DB curl</ExLink> + <ExLink href="https://musclewiki.com/exercise/dumbbell-skullcrusher?model=m">skullcrushers</ExLink></td><td className="sets">3 × 10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-crunch?model=m">Ab machine weighted crunch</ExLink><div className="cue">weight where the last 2–3 reps are hard; curl the torso by contracting abs, controlled return, no jerking</div></td><td className="sets">3 × 12–15</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-crunch?model=m">Ab machine weighted crunch</ExLink><div className="cue">weight where the last 2–3 reps are hard; curl the torso by contracting abs, controlled return, no jerking</div></td><td className="sets">2s2f</td></tr>
         </tbody>
       </table>
     </div>
@@ -362,13 +374,13 @@ const GymOverview = () => (
       <table className="workout">
         <tbody>
           <tr><th>Exercise</th><th>Sets×Reps</th></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/chest">Pec dec fly</ExLink></td><td className="sets">1×8–10, 1×10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-seated-single-arm-full-lateral-raise?model=m">Seated lateral raise</ExLink></td><td className="sets">2 × 10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Close-grip pulldown</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-cable-row?model=m">Low row</ExLink></td><td className="sets">1×6–8, 1×8–10</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/chest">Pec dec fly</ExLink></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/dumbbell-seated-single-arm-full-lateral-raise?model=m">Seated lateral raise</ExLink></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-pulldown?model=m">Close-grip pulldown</ExLink></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-seated-cable-row?model=m">Low row</ExLink></td><td className="sets">2s2f</td></tr>
           <tr><td className="ex">⚑ <ExLink href="https://youtu.be/dfYIApfWS5o?si=2Znu_--1cZcrSd2X">Trap bar deadlift</ExLink><div className="cue">lighter than Monday — knee-friendly hinge, flat back, stand tall, controlled; keep it crisp, not a grind</div></td><td className="sets">2 × 8–10</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-lying-leg-curl?model=m">Lying hamstring curl</ExLink><div className="cue">light isolation — keep it controlled</div></td><td className="sets">6–8, 8–10, 10–12</td></tr>
-          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Seated calf raise</ExLink><div className="cue">full stretch at the bottom, pause at the top; seated hits the soleus</div></td><td className="sets">3 × 12–15</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/machine-lying-leg-curl?model=m">Lying hamstring curl</ExLink><div className="cue">light isolation — keep it controlled</div></td><td className="sets">2s2f</td></tr>
+          <tr><td className="ex"><ExLink href="https://musclewiki.com/exercises/calves">Seated calf raise</ExLink><div className="cue">full stretch at the bottom, pause at the top; seated hits the soleus</div></td><td className="sets">2s2f</td></tr>
           <tr><td className="ex">Superset: <ExLink href="https://musclewiki.com/exercise/dumbbell-hammer-curl?model=m">hammer curls</ExLink> + <ExLink href="https://musclewiki.com/exercise/dips?model=m">tricep dips</ExLink></td><td className="sets">to failure</td></tr>
           <tr><td className="ex"><ExLink href="https://musclewiki.com/exercise/hanging-knee-raises?model=m">Hanging knee raise</ExLink><div className="cue">hang from a pull-up bar, lift knees to chest with control, no swinging</div></td><td className="sets">3 × 10–12</td></tr>
         </tbody>
@@ -379,7 +391,7 @@ const GymOverview = () => (
     <div className="section">
       <div className="section-title">The Rules That Actually Matter</div>
       <ul className="meal-items">
-        <li><strong>Last set to failure, not every set.</strong> Leave 1–2 reps in reserve on earlier sets — protects recovery at 44 while still building muscle.</li>
+        <li><strong>2s2f on isolation/machines; compounds stay straight.</strong> On trap bar, RDL, hip thrust and leg press leave 1–2 reps in reserve — protects recovery and form. Take true failure only where it's safe.</li>
         <li><strong>Progressive overload weekly.</strong> Add a little weight or 1 rep each week. This is THE driver of growth. Log it.</li>
         <li><strong>Control the weight.</strong> Slow on the way down (2–3 sec), full range of motion. Half-reps build half-muscle.</li>
         <li><strong>10k steps daily.</strong> Drives the fat loss without touching recovery.</li>

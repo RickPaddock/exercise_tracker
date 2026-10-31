@@ -560,6 +560,11 @@ const GymLog = () => {
                           {plan.workouts[slot.activityId].note}
                         </div>
                       )}
+                      {exercises.some((ex) => ex.setLabels) && (
+                        <div className={`text-xs rounded-md p-2 border ${isDarkMode ? 'bg-green-900/30 border-green-800 text-green-200' : 'bg-green-50 border-green-200 text-green-800'}`}>
+                          <strong>2s2f</strong> — <strong>Heavy</strong>: 1 set to failure, rest 2 min. <strong>−20%</strong>: drop the weight ~20%, to failure, rest 30 s. <strong>−20%</strong>: same weight, to failure. (Big compounds stay straight sets — leave 1–2 in reserve.)
+                        </div>
+                      )}
                       {exercises.map((ex) => {
                         const prev = prevSession(dateKey, ex.name);
                         return (
@@ -598,7 +603,7 @@ const GymLog = () => {
                           <div className="space-y-1.5 mt-1.5">
                             {Array.from({ length: ex.sets }, (_, i2) => i2).map((setIdx) => (
                               <div key={setIdx} className="flex items-center gap-2">
-                                <span className={`text-xs ${theme.textMuted} w-12`}>Set {setIdx + 1}</span>
+                                <span className={`text-xs ${theme.textMuted} w-14 shrink-0 ${ex.setLabels && ex.setLabels[setIdx] ? 'font-semibold' : ''}`}>{(ex.setLabels && ex.setLabels[setIdx]) || `Set ${setIdx + 1}`}</span>
                                 {ex.unit === 'sec' ? (
                                   <>
                                     <input
