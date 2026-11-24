@@ -8,22 +8,13 @@ const readJson = (key, fallback) => {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch (e) { return fallback; }
 };
 
-// Per-day summary so the numbers can be read without re-adding up the food:
-// protein + calories eaten, and whether that day's workout was ticked done.
-const dailySummary = (nutriLog, gymLog) => {
+// Per-day nutrition summary so the numbers can be read without re-adding up the food.
+const dailySummary = (nutriLog) => {
   const out = {};
-  const dates = new Set([...Object.keys(nutriLog), ...Object.keys(gymLog)]);
-  [...dates].sort().forEach((dk) => {
+  Object.keys(nutriLog).sort().forEach((dk) => {
     const t = dayTotals(nutriLog[dk]);
-    const g = gymLog[dk] || {};
-    const trained = !!g._done;
-    if (!t.has && !trained) return;
-    out[dk] = {
-      protein: t.has ? Math.round(t.P) : null,
-      kcalEaten: t.has ? Math.round(t.K) : null,
-      trained,
-      dayNote: g._note || undefined,
-    };
+    if (!t.has) return;
+    out[dk] = { protein: Math.round(t.P), kcalEaten: Math.round(t.K) };
   });
   return out;
 };
@@ -49,7 +40,7 @@ export const buildBackup = () => {
       foods: FOOD_BY_KEY,
       log: nutriLog,
     },
-    daily: dailySummary(nutriLog, gymLog),
+    daily: dailySummary(nutriLog),
   };
 };
 
