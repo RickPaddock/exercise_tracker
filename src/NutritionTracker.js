@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { X, ChevronLeft, ChevronRight, Plus, Minus, Download, Upload, Watch } from 'lucide-react';
-import { FOOD_GROUPS, normalizeDay, dayTotals, numOrNull } from './nutritionData';
+import { X, ChevronLeft, ChevronRight, Plus, Minus, Download, Upload } from 'lucide-react';
+import { FOOD_GROUPS, normalizeDay, dayTotals } from './nutritionData';
 import { downloadBackup, writeBackupToStorage } from './backup';
 
 const toIso = (d) => d.toISOString().split('T')[0];
@@ -34,7 +34,6 @@ export default function NutritionTracker() {
   const items = day.items;
   const customs = day.custom;
   const { P: totalP, K: totalK } = dayTotals(day);
-  const burn = numOrNull(day.burn);
 
   const tP = parseFloat(targets.protein) || 0;
   const tK = parseFloat(targets.kcal) || 0;
@@ -53,36 +52,22 @@ export default function NutritionTracker() {
     setCustom({ name: '', protein: '', kcal: '' });
   };
   const removeCustom = (id) => setDay((d) => ({ ...d, custom: d.custom.filter((c) => c.id !== id) }));
-  const setActivity = (field, value) => setDay((d) => ({ ...d, [field]: value }));
-  // Clears the food only — Garmin burn/steps for the day are kept.
-  const clearDay = () => setDay((d) => ({ ...d, items: {}, custom: [] }));
+  const clearDay = () => setLog((prev) => ({ ...prev, [date]: { items: {}, custom: [] } }));
   const shiftDay = (n) => { const d = new Date(date); d.setDate(d.getDate() + n); setDate(toIso(d)); };
 
   const isToday = date === toIso(new Date());
   const dateLabel = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   const anyLogged = Object.keys(items).length > 0 || customs.length > 0;
 
-  // 7-day averages (each only over days that have that entry, so missed days don't drag it to 0).
+  // 7-day average (only counting days that actually have entries, so missed days don't drag it to 0).
   let wkP = 0; let wkK = 0; let wkN = 0;
-  let wkBurn = 0; let wkBurnN = 0; let wkSteps = 0; let wkStepsN = 0;
-  let wkBal = 0; let wkBalN = 0;
   for (let i = 0; i < 7; i += 1) {
     const d = new Date(date); d.setDate(d.getDate() - i);
-    const raw = normalizeDay(log[toIso(d)]);
-    const t = dayTotals(raw);
-    const b = numOrNull(raw.burn);
-    const st = numOrNull(raw.steps);
+    const t = dayTotals(log[toIso(d)]);
     if (t.has) { wkP += t.P; wkK += t.K; wkN += 1; }
-    if (b !== null) { wkBurn += b; wkBurnN += 1; }
-    if (st !== null) { wkSteps += st; wkStepsN += 1; }
-    if (t.has && b !== null) { wkBal += t.K - b; wkBalN += 1; }
   }
   const avgP = wkN ? Math.round(wkP / wkN) : 0;
   const avgK = wkN ? Math.round(wkK / wkN) : 0;
-  const avgBurn = wkBurnN ? Math.round(wkBurn / wkBurnN) : null;
-  const avgSteps = wkStepsN ? Math.round(wkSteps / wkStepsN) : null;
-  const avgBal = wkBalN ? Math.round(wkBal / wkBalN) : null;
-  const fmtBal = (v) => (v <= 0 ? `${Math.abs(v)} deficit` : `${v} surplus`);
 
   const importData = (e) => {
     const file = e.target.files && e.target.files[0];
@@ -174,29 +159,6 @@ export default function NutritionTracker() {
           )}
         </div>
 
-        {/* Garmin activity */}
-        <div className={`${card} p-4 mb-4`}>
-          <div className="flex items-center gap-1.5 mb-2">
-            <Watch className="w-4 h-4 text-gray-500" />
-            <span className="text-xs font-bold uppercase tracking-wide text-gray-500">Activity (from Garmin)</span>
-          </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-            <label className="flex items-center gap-1.5">Burned
-              <input type="number" inputMode="numeric" placeholder="total" value={day.burn} onChange={(e) => setActivity('burn', e.target.value)} className="w-20 px-2 py-1 border border-gray-300 rounded-md" />kcal
-            </label>
-            <label className="flex items-center gap-1.5">Steps
-              <input type="number" inputMode="numeric" placeholder="steps" value={day.steps} onChange={(e) => setActivity('steps', e.target.value)} className="w-24 px-2 py-1 border border-gray-300 rounded-md" />
-            </label>
-          </div>
-          {burn !== null && anyLogged && (
-            <div className="mt-2 text-sm">
-              Eaten {Math.round(totalK)} − burned {Math.round(burn)} ={' '}
-              <span className={`font-semibold ${totalK - burn <= 0 ? 'text-green-700' : 'text-amber-600'}`}>{fmtBal(Math.round(totalK - burn))}</span>
-            </div>
-          )}
-          <div className="mt-1.5 text-[11px] text-gray-500">Enter Garmin Connect's <strong>Total calories</strong> (resting + active) at the end of the day. Garmin tends to run a little high, so treat a small deficit here as roughly maintenance.</div>
-        </div>
-
         {/* 7-day average */}
         <div className={`${card} p-4 mb-4`}>
           <div className="flex items-baseline justify-between mb-2">
@@ -215,13 +177,6 @@ export default function NutritionTracker() {
                 <div className="text-2xl font-bold text-gray-900">{avgK}</div>
                 <div className={`text-xs font-semibold ${tK && avgK > tK ? 'text-red-600' : 'text-green-600'}`}>kcal/day{tK ? ` · target ${tK}` : ''}</div>
               </div>
-            </div>
-          )}
-          {(avgBurn !== null || avgSteps !== null) && (
-            <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-700">
-              {avgBurn !== null && <span><strong>{avgBurn}</strong> <span className="text-gray-500">kcal burned/day</span></span>}
-              {avgSteps !== null && <span><strong>{avgSteps.toLocaleString()}</strong> <span className="text-gray-500">steps/day</span></span>}
-              {avgBal !== null && <span className={avgBal <= 0 ? 'text-green-700' : 'text-amber-600'}><strong>{fmtBal(avgBal)}</strong> <span className="text-gray-500">avg</span></span>}
             </div>
           )}
         </div>
@@ -267,13 +222,13 @@ export default function NutritionTracker() {
         </div>
 
         {anyLogged && (
-          <button type="button" onClick={clearDay} className="text-xs text-gray-400 hover:text-red-600 underline">clear this day's food</button>
+          <button type="button" onClick={clearDay} className="text-xs text-gray-400 hover:text-red-600 underline">clear this day</button>
         )}
 
         {/* Backup */}
         <div className={`${card} p-4 mt-4 mb-10`}>
           <div className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-1">Backup / send to coach</div>
-          <div className="text-[11px] text-gray-500 mb-3">One file with everything — workouts, bodyweight, waist, food, Garmin burn and steps. Same file as Export on the Gym page.</div>
+          <div className="text-[11px] text-gray-500 mb-3">One file with everything — workouts, bodyweight, waist and food. Same file as Export on the Gym page.</div>
           <div className="flex gap-2">
             <button type="button" onClick={downloadBackup} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300"><Download className="w-4 h-4" /> Export everything</button>
             <button type="button" onClick={() => fileInputRef.current && fileInputRef.current.click()} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300"><Upload className="w-4 h-4" /> Import</button>

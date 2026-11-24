@@ -45,17 +45,11 @@ export const FOOD_GROUPS = [
 export const FOOD_BY_KEY = {};
 FOOD_GROUPS.forEach((g) => g.items.forEach((i) => { FOOD_BY_KEY[i.key] = i; }));
 
-// A day is { items: {foodKey: qty}, custom: [{id,name,protein,kcal}], burn, steps }.
-// burn = Garmin "Total calories" for the day; steps = Garmin steps (both typed in, as strings).
+// A day is { items: {foodKey: qty}, custom: [{id,name,protein,kcal}] }.
 export const normalizeDay = (raw) => {
-  if (!raw) return { items: {}, custom: [], burn: '', steps: '' };
-  if (Array.isArray(raw)) return { items: {}, custom: raw, burn: '', steps: '' }; // migrate old format
-  return {
-    items: raw.items || {},
-    custom: Array.isArray(raw.custom) ? raw.custom : [],
-    burn: raw.burn ?? '',
-    steps: raw.steps ?? '',
-  };
+  if (!raw) return { items: {}, custom: [] };
+  if (Array.isArray(raw)) return { items: {}, custom: raw }; // migrate old format
+  return { items: raw.items || {}, custom: Array.isArray(raw.custom) ? raw.custom : [] };
 };
 
 // Protein/kcal eaten for a (raw or normalized) day; `has` = any food logged.
@@ -69,10 +63,4 @@ export const dayTotals = (raw) => {
   });
   d.custom.forEach((c) => { P += parseFloat(c.protein) || 0; K += parseFloat(c.kcal) || 0; });
   return { P, K, has: Object.keys(d.items).length > 0 || d.custom.length > 0 };
-};
-
-// Parse a typed number; '' / junk → null.
-export const numOrNull = (v) => {
-  const n = parseFloat(v);
-  return Number.isFinite(n) ? n : null;
 };

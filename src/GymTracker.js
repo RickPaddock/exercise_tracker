@@ -206,7 +206,7 @@ const GymLog = () => {
   };
 
   // ---- export / import ----
-  // One file for everything (gym + nutrition + Garmin) — see backup.js.
+  // One file for everything (gym + nutrition) — see backup.js.
   const exportData = downloadBackup;
   const importData = (e) => {
     const file = e.target.files && e.target.files[0];

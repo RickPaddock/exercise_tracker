@@ -1,32 +1,26 @@
 // One backup file for the whole app: gym log + plan, bodyweight/waist, and
-// nutrition (food, Garmin burn, steps). Read straight from localStorage so it
+// nutrition (food + targets). Read straight from localStorage so it
 // can be exported from any page.
 import { loadPlan, loadWeekPlans } from './gymPlan';
-import { FOOD_BY_KEY, normalizeDay, dayTotals, numOrNull } from './nutritionData';
+import { FOOD_BY_KEY, dayTotals } from './nutritionData';
 
 const readJson = (key, fallback) => {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch (e) { return fallback; }
 };
 
 // Per-day summary so the numbers can be read without re-adding up the food:
-// eaten vs Garmin burn, steps, and whether that day's workout was ticked done.
+// protein + calories eaten, and whether that day's workout was ticked done.
 const dailySummary = (nutriLog, gymLog) => {
   const out = {};
   const dates = new Set([...Object.keys(nutriLog), ...Object.keys(gymLog)]);
   [...dates].sort().forEach((dk) => {
-    const d = normalizeDay(nutriLog[dk]);
-    const t = dayTotals(d);
-    const burn = numOrNull(d.burn);
-    const steps = numOrNull(d.steps);
+    const t = dayTotals(nutriLog[dk]);
     const g = gymLog[dk] || {};
     const trained = !!g._done;
-    if (!t.has && burn === null && steps === null && !trained) return;
+    if (!t.has && !trained) return;
     out[dk] = {
       protein: t.has ? Math.round(t.P) : null,
       kcalEaten: t.has ? Math.round(t.K) : null,
-      kcalBurned: burn,
-      balance: t.has && burn !== null ? Math.round(t.K - burn) : null,
-      steps,
       trained,
       dayNote: g._note || undefined,
     };
