@@ -32,6 +32,7 @@ import {
   saveWeekPlans,
   weekArrangement,
 } from './gymPlan';
+import { downloadBackup, writeBackupToStorage } from './backup';
 
 export { getMonday, addDays, toKey, DAY_NAMES, WEEK_ORDER, DAY_MS } from './gymPlan';
 
@@ -205,18 +206,8 @@ const GymLog = () => {
   };
 
   // ---- export / import ----
-  const exportData = () => {
-    const payload = { version: 5, exportedAt: new Date().toISOString(), startDate, plan, weekPlans, bodyweight, waist, log };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `gym-log-${todayIso}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
+  // One file for everything (gym + nutrition + Garmin) — see backup.js.
+  const exportData = downloadBackup;
   const importData = (e) => {
     const file = e.target.files && e.target.files[0];
     if (!file) return;
@@ -224,6 +215,7 @@ const GymLog = () => {
     reader.onload = () => {
       try {
         const data = JSON.parse(reader.result);
+        writeBackupToStorage(data); // also restores nutrition, if the file has it
         if (data.log && typeof data.log === 'object') setLog(data.log);
         if (data.startDate) setStartDate(data.startDate);
         if (data.plan && Array.isArray(data.plan.week) && data.plan.workouts) persistPlan(data.plan);
@@ -231,9 +223,9 @@ const GymLog = () => {
         if (data.bodyweight && typeof data.bodyweight === 'object') setBodyweight(data.bodyweight);
         if (data.waist && typeof data.waist === 'object') setWaist(data.waist);
         setWeekOffset(computeOffset(data.startDate || startDate));
-        window.alert('Workout log imported.');
+        window.alert(data.nutrition ? 'Workouts and nutrition imported.' : 'Workout log imported.');
       } catch (err) {
-        window.alert('Could not read that file — make sure it is a gym-log export.');
+        window.alert('Could not read that file — make sure it is an export from this app.');
       }
     };
     reader.readAsText(file);

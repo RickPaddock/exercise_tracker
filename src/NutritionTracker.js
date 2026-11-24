@@ -1,60 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { X, ChevronLeft, ChevronRight, Plus, Minus } from 'lucide-react';
-
-// Simple building blocks you count in everyday portions — no exact weighing needed.
-// Protein/kcal per unit are honest rough estimates; nudge the targets to suit.
-const FOOD_GROUPS = [
-  {
-    category: 'Protein',
-    items: [
-      { key: 'eggs', name: 'Eggs', unit: 'per egg', protein: 6, kcal: 75 },
-      { key: 'chicken', name: 'Chicken breast', unit: 'palm ~150g', protein: 45, kcal: 250 },
-      { key: 'beef', name: 'Lean beef mince', unit: 'portion ~150g', protein: 38, kcal: 280 },
-      { key: 'salmon', name: 'Salmon', unit: 'fillet ~150g', protein: 42, kcal: 300 },
-      { key: 'yogurt', name: 'Kri Kri 0% yogurt', unit: '200g', protein: 20, kcal: 110 },
-      { key: 'cottage', name: 'Cottage cheese', unit: '200g', protein: 24, kcal: 160 },
-      { key: 'whey', name: 'Whey shake (with milk)', unit: '1 scoop + 250ml', protein: 32, kcal: 245 },
-      { key: 'proteindrink', name: 'Lidl protein drink', unit: '1 bottle 330ml', protein: 35, kcal: 202 },
-    ],
-  },
-  {
-    category: 'Carbs',
-    items: [
-      { key: 'rice', name: 'Rice', unit: 'cooked bowl', protein: 5, kcal: 260 },
-      { key: 'oats', name: 'Oats', unit: '60g dry', protein: 9, kcal: 230 },
-      { key: 'banana', name: 'Banana', unit: '1', protein: 1, kcal: 105 },
-    ],
-  },
-  {
-    category: 'Veg & fruit',
-    items: [
-      { key: 'veg', name: 'Veg', unit: 'big serving', protein: 3, kcal: 50 },
-      { key: 'berries', name: 'Blueberries', unit: 'handful', protein: 0, kcal: 40 },
-    ],
-  },
-  {
-    category: 'Fats & extras',
-    items: [
-      { key: 'avocado', name: 'Avocado', unit: 'half', protein: 2, kcal: 160 },
-      { key: 'pb', name: 'Peanut butter', unit: '1 tbsp', protein: 4, kcal: 95 },
-      { key: 'oliveoil', name: 'Olive oil', unit: '1 tbsp', protein: 0, kcal: 120 },
-      { key: 'feta', name: 'Feta', unit: 'small', protein: 5, kcal: 70 },
-    ],
-  },
-];
-
-const FOOD_BY_KEY = {};
-FOOD_GROUPS.forEach((g) => g.items.forEach((i) => { FOOD_BY_KEY[i.key] = i; }));
+import React, { useState, useEffect, useRef } from 'react';
+import { X, ChevronLeft, ChevronRight, Plus, Minus, Download, Upload, Watch } from 'lucide-react';
+import { FOOD_GROUPS, normalizeDay, dayTotals, numOrNull } from './nutritionData';
+import { downloadBackup, writeBackupToStorage } from './backup';
 
 const toIso = (d) => d.toISOString().split('T')[0];
 const uid = () => `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
-
-// A day is { items: {foodKey: qty}, custom: [{id,name,protein,kcal}] }.
-const normalizeDay = (raw) => {
-  if (!raw) return { items: {}, custom: [] };
-  if (Array.isArray(raw)) return { items: {}, custom: raw }; // migrate old format
-  return { items: raw.items || {}, custom: Array.isArray(raw.custom) ? raw.custom : [] };
-};
 
 export default function NutritionTracker() {
   const [date, setDate] = useState(() => toIso(new Date()));
@@ -67,6 +17,7 @@ export default function NutritionTracker() {
   const [custom, setCustom] = useState({ name: '', protein: '', kcal: '' });
   const [showTargets, setShowTargets] = useState(false);
   const [navH, setNavH] = useState(64);
+  const fileInputRef = useRef(null);
 
   // Measure the app's top nav so the totals card can stick just below it.
   useEffect(() => {
@@ -82,14 +33,8 @@ export default function NutritionTracker() {
   const day = normalizeDay(log[date]);
   const items = day.items;
   const customs = day.custom;
-
-  let totalP = 0;
-  let totalK = 0;
-  Object.keys(items).forEach((k) => {
-    const f = FOOD_BY_KEY[k];
-    if (f && items[k] > 0) { totalP += f.protein * items[k]; totalK += f.kcal * items[k]; }
-  });
-  customs.forEach((c) => { totalP += parseFloat(c.protein) || 0; totalK += parseFloat(c.kcal) || 0; });
+  const { P: totalP, K: totalK } = dayTotals(day);
+  const burn = numOrNull(day.burn);
 
   const tP = parseFloat(targets.protein) || 0;
   const tK = parseFloat(targets.kcal) || 0;
@@ -108,29 +53,55 @@ export default function NutritionTracker() {
     setCustom({ name: '', protein: '', kcal: '' });
   };
   const removeCustom = (id) => setDay((d) => ({ ...d, custom: d.custom.filter((c) => c.id !== id) }));
-  const clearDay = () => setLog((prev) => ({ ...prev, [date]: { items: {}, custom: [] } }));
+  const setActivity = (field, value) => setDay((d) => ({ ...d, [field]: value }));
+  // Clears the food only — Garmin burn/steps for the day are kept.
+  const clearDay = () => setDay((d) => ({ ...d, items: {}, custom: [] }));
   const shiftDay = (n) => { const d = new Date(date); d.setDate(d.getDate() + n); setDate(toIso(d)); };
 
   const isToday = date === toIso(new Date());
   const dateLabel = new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   const anyLogged = Object.keys(items).length > 0 || customs.length > 0;
 
-  // 7-day average (only counting days that actually have entries, so missed days don't drag it to 0).
-  const dayTotals = (dk) => {
-    const d = normalizeDay(log[dk]);
-    let P = 0; let K = 0;
-    Object.keys(d.items).forEach((k) => { const f = FOOD_BY_KEY[k]; if (f) { P += f.protein * d.items[k]; K += f.kcal * d.items[k]; } });
-    d.custom.forEach((c) => { P += parseFloat(c.protein) || 0; K += parseFloat(c.kcal) || 0; });
-    return { P, K, has: Object.keys(d.items).length > 0 || d.custom.length > 0 };
-  };
+  // 7-day averages (each only over days that have that entry, so missed days don't drag it to 0).
   let wkP = 0; let wkK = 0; let wkN = 0;
+  let wkBurn = 0; let wkBurnN = 0; let wkSteps = 0; let wkStepsN = 0;
+  let wkBal = 0; let wkBalN = 0;
   for (let i = 0; i < 7; i += 1) {
     const d = new Date(date); d.setDate(d.getDate() - i);
-    const t = dayTotals(toIso(d));
+    const raw = normalizeDay(log[toIso(d)]);
+    const t = dayTotals(raw);
+    const b = numOrNull(raw.burn);
+    const st = numOrNull(raw.steps);
     if (t.has) { wkP += t.P; wkK += t.K; wkN += 1; }
+    if (b !== null) { wkBurn += b; wkBurnN += 1; }
+    if (st !== null) { wkSteps += st; wkStepsN += 1; }
+    if (t.has && b !== null) { wkBal += t.K - b; wkBalN += 1; }
   }
   const avgP = wkN ? Math.round(wkP / wkN) : 0;
   const avgK = wkN ? Math.round(wkK / wkN) : 0;
+  const avgBurn = wkBurnN ? Math.round(wkBurn / wkBurnN) : null;
+  const avgSteps = wkStepsN ? Math.round(wkSteps / wkStepsN) : null;
+  const avgBal = wkBalN ? Math.round(wkBal / wkBalN) : null;
+  const fmtBal = (v) => (v <= 0 ? `${Math.abs(v)} deficit` : `${v} surplus`);
+
+  const importData = (e) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const data = JSON.parse(reader.result);
+        writeBackupToStorage(data);
+        if (data.nutrition && data.nutrition.log) setLog(data.nutrition.log);
+        if (data.nutrition && data.nutrition.targets) setTargets(data.nutrition.targets);
+        window.alert(data.nutrition ? 'Workouts and nutrition imported.' : 'Workout log imported (that file has no nutrition data).');
+      } catch (err) {
+        window.alert('Could not read that file — make sure it is an export from this app.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
 
   const Bar = ({ value, target, unit, over }) => {
     const pct = target > 0 ? Math.min(100, (value / target) * 100) : 0;
@@ -203,6 +174,29 @@ export default function NutritionTracker() {
           )}
         </div>
 
+        {/* Garmin activity */}
+        <div className={`${card} p-4 mb-4`}>
+          <div className="flex items-center gap-1.5 mb-2">
+            <Watch className="w-4 h-4 text-gray-500" />
+            <span className="text-xs font-bold uppercase tracking-wide text-gray-500">Activity (from Garmin)</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+            <label className="flex items-center gap-1.5">Burned
+              <input type="number" inputMode="numeric" placeholder="total" value={day.burn} onChange={(e) => setActivity('burn', e.target.value)} className="w-20 px-2 py-1 border border-gray-300 rounded-md" />kcal
+            </label>
+            <label className="flex items-center gap-1.5">Steps
+              <input type="number" inputMode="numeric" placeholder="steps" value={day.steps} onChange={(e) => setActivity('steps', e.target.value)} className="w-24 px-2 py-1 border border-gray-300 rounded-md" />
+            </label>
+          </div>
+          {burn !== null && anyLogged && (
+            <div className="mt-2 text-sm">
+              Eaten {Math.round(totalK)} − burned {Math.round(burn)} ={' '}
+              <span className={`font-semibold ${totalK - burn <= 0 ? 'text-green-700' : 'text-amber-600'}`}>{fmtBal(Math.round(totalK - burn))}</span>
+            </div>
+          )}
+          <div className="mt-1.5 text-[11px] text-gray-500">Enter Garmin Connect's <strong>Total calories</strong> (resting + active) at the end of the day. Garmin tends to run a little high, so treat a small deficit here as roughly maintenance.</div>
+        </div>
+
         {/* 7-day average */}
         <div className={`${card} p-4 mb-4`}>
           <div className="flex items-baseline justify-between mb-2">
@@ -221,6 +215,13 @@ export default function NutritionTracker() {
                 <div className="text-2xl font-bold text-gray-900">{avgK}</div>
                 <div className={`text-xs font-semibold ${tK && avgK > tK ? 'text-red-600' : 'text-green-600'}`}>kcal/day{tK ? ` · target ${tK}` : ''}</div>
               </div>
+            </div>
+          )}
+          {(avgBurn !== null || avgSteps !== null) && (
+            <div className="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-x-6 gap-y-1 text-sm text-gray-700">
+              {avgBurn !== null && <span><strong>{avgBurn}</strong> <span className="text-gray-500">kcal burned/day</span></span>}
+              {avgSteps !== null && <span><strong>{avgSteps.toLocaleString()}</strong> <span className="text-gray-500">steps/day</span></span>}
+              {avgBal !== null && <span className={avgBal <= 0 ? 'text-green-700' : 'text-amber-600'}><strong>{fmtBal(avgBal)}</strong> <span className="text-gray-500">avg</span></span>}
             </div>
           )}
         </div>
@@ -266,8 +267,19 @@ export default function NutritionTracker() {
         </div>
 
         {anyLogged && (
-          <button type="button" onClick={clearDay} className="text-xs text-gray-400 hover:text-red-600 underline mb-10">clear this day</button>
+          <button type="button" onClick={clearDay} className="text-xs text-gray-400 hover:text-red-600 underline">clear this day's food</button>
         )}
+
+        {/* Backup */}
+        <div className={`${card} p-4 mt-4 mb-10`}>
+          <div className="text-xs font-bold uppercase tracking-wide text-gray-500 mb-1">Backup / send to coach</div>
+          <div className="text-[11px] text-gray-500 mb-3">One file with everything — workouts, bodyweight, waist, food, Garmin burn and steps. Same file as Export on the Gym page.</div>
+          <div className="flex gap-2">
+            <button type="button" onClick={downloadBackup} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300"><Download className="w-4 h-4" /> Export everything</button>
+            <button type="button" onClick={() => fileInputRef.current && fileInputRef.current.click()} className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm bg-gray-200 hover:bg-gray-300"><Upload className="w-4 h-4" /> Import</button>
+            <input ref={fileInputRef} type="file" accept="application/json,.json" onChange={importData} className="hidden" />
+          </div>
+        </div>
       </div>
     </div>
   );
